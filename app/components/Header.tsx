@@ -10,7 +10,7 @@ function Header() {
           href={"/"}
           className="font-bold text-xl tracking-wide md:text-2xl  "
         >
-          Government College of Engineering Srirangam,Trichy 620012
+          Government College of Engineering Srirangam,Trichy-620012
         </Link>
         <br />
         <h4 className="font-semibold text-lg uppercase">

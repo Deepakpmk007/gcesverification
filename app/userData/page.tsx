@@ -3,10 +3,12 @@
 import React from "react";
 import { useAppSelector } from "@/lip/store";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const UserDetails = () => {
   const student = useAppSelector((state) => state.studentId.value);
   const applicant = useAppSelector((state) => state.applicantData.value);
+  const router = useRouter();
 
   // Merge data for posting (excluding file, fileIds, uniqueId)
   const postData = { ...student, ...applicant };
@@ -42,7 +44,8 @@ const UserDetails = () => {
         body: JSON.stringify(postData),
       });
 
-      const responseText = await response.text(); // Read raw response text
+      const responseText = await response.text();
+      router.push("/success"); // Read raw response text
       console.log("Response Status:", response.status);
       console.log("Response Text:", responseText);
 

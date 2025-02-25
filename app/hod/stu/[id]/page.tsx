@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
-import html2canvas from "html2canvas";
 
 export default function StudentPage() {
   const { id } = useParams(); // Get student ID from URL
@@ -12,14 +11,8 @@ export default function StudentPage() {
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [email, setEmail] = useState<string>("");
   const [isSending, setIsSending] = useState(false);
-
-  const pdfRef = useRef<HTMLDivElement>(null);
-  const [selections, setSelections] = useState<{ [key: string]: string }>({});
-
-  const handleChange = (field: string, value: string) => {
-    setSelections((prev) => ({ ...prev, [field]: value }));
-  };
 
   useEffect(() => {
     console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
@@ -35,7 +28,7 @@ export default function StudentPage() {
         const res = await fetch(`http://localhost:3000/api/getData?id=${id}`);
         const data = await res.json();
 
-        // console.log("Fetched Data:", data.data[0]); // Debugging: Check API response
+        console.log("Fetched Data:", data.data[0]); // Debugging: Check API response
 
         if (data.success) {
           setStudent(data.data[0]);
@@ -53,195 +46,307 @@ export default function StudentPage() {
   }, [id]);
   // console.log(student);
 
-  const updataData = async (id: string, verifiedBy: string) => {
-    setLoading(true);
+  const updateUserStudentData = async (userId: string, studentId: string) => {
     try {
-      const response = await fetch("/api/data", {
+      const response = await fetch("http://localhost:3000/api/new-user", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, verifiedBy }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, studentId }),
       });
-
       const data = await response.json();
-
-      if (response.ok) {
-        console.log("Data updated successfully!");
-      } else {
-        console.log(`Error: ${data.message || "Failed to update data"}`);
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update user data.");
       }
+      console.log("Update Successful:", data);
+      toast.success("Student ID added to user data successfully!");
     } catch (error: any) {
-      console.log(`Error: ${error.message}`);
-    } finally {
-      setLoading(false);
+      console.error("Error updating user data:", error.message);
+      toast.error(`Error: ${error.message}`);
     }
   };
 
-  const handleGenerateAndSendPDF = async () => {
-    if (pdfRef.current) {
-      const canvas = await html2canvas(pdfRef.current);
-      canvas.toBlob(async (blob) => {
-        if (blob) {
-          const formData = new FormData();
-          const email = process.env.SMTP_SERVER_USERNAME;
-          if (email) {
-            formData.append("email", email);
-          } else {
-            console.error("SMTP_SERVER_USERNAME is not defined");
-          }
-          formData.append("sendTo", student.email);
-          formData.append("subject", "Verified user data");
-          formData.append("text", `verified by ${student.verifiedBy}`);
-          formData.append("pdf", blob, "student_details.pdf");
-
-          try {
-            const response = await fetch("/api/pdfSend", {
-              method: "POST",
-              body: formData,
-            });
-            updataData(student._id, "deepak");
-            if (response.ok) {
-              console.log("Email sent successfully!");
-            } else {
-              console.error("Failed to send email.");
-            }
-          } catch (error) {
-            console.error("Error sending email:", error);
-          }
-        }
-      });
-    }
-    if (loading) return <p>Loading student data...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
-    if (!student) return <p>No student found</p>;
-
-    return (
-      <div className="p-6">
-        <button
-          onClick={() => router.back()} // Go back to the previous page
-          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-        >
-          ← Back
-        </button>
-
-        <h1 className="text-2xl font-bold mb-4">Student Details</h1>
-        <div className="border p-4 rounded shadow-lg bg-white">
-          <table className="w-full border-collapse border border-gray-300 shadow-md">
-            <thead>
-              <tr className="bg-blue-500 text-white">
-                <th className="p-3 border">Field</th>
-                <th className="p-3 border">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  id
-                </td>
-                <td className="p-3 border">{student._id}</td>
-              </tr>
-
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  remark
-                </td>
-                <td className="p-3 border">{student.remark}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  verified
-                </td>
-                <td className="p-3 border">
-                  {student.verified ? `✅ verified` : `❌ not-verified`}
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  verifiedBy
-                </td>
-                <td className="p-3 border">{student.verifiedBy}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  agencyName
-                </td>
-                <td className="p-3 border">{student.agencyName}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  senderEmail
-                </td>
-                <td className="p-3 border">{student.senderEmail}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  contact
-                </td>
-                <td className="p-3 border">{student.contact}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  File Download Link
-                </td>
-                <td className="flex gap-4">
-                  {student.fileIds?.map((fileId: string, i: number) => (
-                    <a
-                      key={fileId}
-                      href={appWriterStorage.getFileDownload(
-                        "676d799200277b1b2951",
-                        `${fileId}`
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      {i}-File-{fileId}
-                    </a>
-                  ))}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div ref={pdfRef}>
-            <table className="w-full border-collapse border border-gray-300 shadow-md mt-5">
-              <thead>
-                <tr className="bg-blue-500 text-white">
-                  <th className="p-3 border">Field</th>
-                  <th className="p-3 border">Value</th>
-                  <th className="p-3 border">Yes/No</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(student).map(([field, value]) => (
-                  <tr key={field} className="border-b">
-                    <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                      {field}
-                    </td>
-                    <td className="p-3 border">{value}</td>
-                    <td>
-                      <select
-                        className="border ml-2"
-                        value={selections[field] || ""}
-                        onChange={(e) => handleChange(field, e.target.value)}
-                      >
-                        <option value="">Select</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-5">
-            <button className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition">
-              Verified
-            </button>
-          </div>
-        </div>
-      </div>
+  const sendEmail = async () => {
+    setIsSending(true);
+    const userResponse = await fetch(
+      `http://localhost:3000/api/findByEmail?email=${email}`
     );
+    const userData = await userResponse.json();
+
+    if (!userResponse.ok) {
+      throw new Error(`User Fetch Error: ${userData.message}`);
+    }
+
+    const userId = userData.data._id;
+    updateUserStudentData(userId, student._id);
+
+    console.log("Fetched User ID:", userId);
+
+    try {
+      const emailResponse = await fetch("/api/sendMail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: process.env.SMTP_SERVER_USERNAME, // Sender's email
+          sendTo: email, // Receiver's email
+          subject: "Verification of Student Details", // Email subject
+          text: `${student.remark}`, // HTML formatted email
+          html: `
+          <h1>Student Details</h1>
+          <p><strong>Name:</strong> ${student.name}</p>
+          <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
+          <p><strong>Degree:</strong> ${student.degree}</p>
+          <p><strong>Branch:</strong> ${student.branch}</p>
+          <p><strong>Year of Passing:</strong> ${student.yearOfPassing}</p>
+          <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
+          <p><strong>Remark:</strong> ${student.remark}</p>
+          `,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error(
+          `Email Error: ${emailResponse.status} - ${await emailResponse.text()}`
+        );
+      }
+
+      toast.success("Data submitted and email sent successfully!");
+    } catch (error: any) {
+      toast.error(`Failed to send email: ${error.message}`);
+    } finally {
+      setIsSending(false); // Reset loading state
+    }
   };
+  if (loading) return <p>Loading student data...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!student) return <p>No student found</p>;
+
+  return (
+    <div className="p-6">
+      <button
+        onClick={() => router.back()} // Go back to the previous page
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >
+        ← Back
+      </button>
+
+      <h1 className="text-2xl font-bold mb-4">Student Details</h1>
+      <div className="border p-4 rounded shadow-lg bg-white">
+        <table className="w-full border-collapse border border-gray-300 shadow-md">
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="p-3 border">Field</th>
+              <th className="p-3 border">Value</th>
+              <th className="p-3 border">Yes/No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                id
+              </td>
+              <td className="p-3 border">{student._id}</td>
+            </tr>
+
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                name
+              </td>
+              <td className="p-3 border">{student.name}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                Regno
+              </td>
+              <td className="p-3 border">{student.regNo}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                date of birth
+              </td>
+              <td className="p-3 border">{student.dateOfBirth}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                degree
+              </td>
+              <td className="p-3 border">{student.degree}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                branch
+              </td>
+              <td className="p-3 border">{student.branch}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                yearOfPassing
+              </td>
+              <td className="p-3 border">{student.yearOfPassing}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                yearOfStudy
+              </td>
+              <td className="p-3 border">{student.yearOfStudy}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                backlogs
+              </td>
+              <td className="p-3 border">{student.backlogs}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                classObtain
+              </td>
+              <td className="p-3 border">{student.classObtain}</td>
+              <td>
+                <select className="border ml-2">
+                  <option value="yes">yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                remark
+              </td>
+              <td className="p-3 border">{student.remark}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                verified
+              </td>
+              <td className="p-3 border">
+                {student.verified ? `✅ verified` : `❌ not-verified`}
+              </td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                verifiedBy
+              </td>
+              <td className="p-3 border">{student.verifiedBy}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                agencyName
+              </td>
+              <td className="p-3 border">{student.agencyName}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                senderEmail
+              </td>
+              <td className="p-3 border">{student.senderEmail}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                contact
+              </td>
+              <td className="p-3 border">{student.contact}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                File Download Link
+              </td>
+              <td className="flex gap-4">
+                {student.fileIds?.map((fileId: string, i: number) => (
+                  <a
+                    key={fileId}
+                    href={appWriterStorage.getFileDownload(
+                      "676d799200277b1b2951",
+                      `${fileId}`
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    {i}-File-{fileId}
+                  </a>
+                ))}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="mt-5">
+          <button className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition">
+            Verified
+          </button>
+        </div>
+        {/* <div className="flex p-5 gap-5">
+          <h1>Send Email</h1>
+          <select
+            name="email"
+            id="email"
+            onChange={(e) => setEmail(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="">Select Email</option>
+            <option value="deepakpmk007@gmail.com">
+              deepakpmk007@gmail.com
+            </option>
+            <option value="deepakpmk9600@gmail.com">
+              deepakpmk9600@gmail.com
+            </option>
+          </select>
+          <button
+            className="bg-blue-400 font-semibold rounded-md p-2"
+            onClick={sendEmail}
+            disabled={isSending}
+          >
+            {isSending ? "Sending..." : `Send Email to ${email}`}
+          </button>
+        </div> */}
+      </div>
+    </div>
+  );
 }
