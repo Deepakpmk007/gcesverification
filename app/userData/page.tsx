@@ -71,7 +71,7 @@ const UserDetails = () => {
               <div key={key} className="text-sm font-medium text-gray-600">
                 {key}:
                 <span className="block text-lg font-semibold text-gray-900">
-                  {value}
+                  {value as React.ReactNode}
                 </span>
               </div>
             ))}
@@ -88,7 +88,7 @@ const UserDetails = () => {
               <div key={key} className="text-sm font-medium text-gray-600">
                 {key}:
                 <span className="block text-lg font-semibold text-gray-900">
-                  {value}
+                  {value as React.ReactNode}
                 </span>
               </div>
             ))}

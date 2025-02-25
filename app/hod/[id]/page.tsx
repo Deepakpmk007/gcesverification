@@ -16,7 +16,7 @@ export default function page() {
         const res = await data.json();
         setData(res.data);
       } catch (err) {
-        setError(res.message || "Student not found");
+        setError("Student not found");
       } finally {
         setLoading(false);
       }

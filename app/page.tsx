@@ -30,7 +30,7 @@ export default function Home() {
   const [branchShort, setBranchShort] = useState<string>(""); // Branch short form as a string
   const [studyPeriod, setStudyPeriod] = useState<string>("");
   const [monthYearPassing, setMonthYearPassing] = useState<string>("");
-  const [CGPA, setCGPA] = useState<number>();
+  const [CGPA, setCGPA] = useState<number>(0);
   const [remarks, setRemarks] = useState<string>("");
   const [backlogs, setBacklogs] = useState<string>(""); // backlogs as string
   const [classObtained, setClassObtained] = useState<string>("");
@@ -47,6 +47,9 @@ export default function Home() {
     { name: "Mechanical Engineering", shortForm: "ME" },
   ];
   function getUniqueId() {
+    if (!regNo) {
+      return "";
+    }
     const year = regNo.toString().slice(4, 6);
     const slice = year.slice(-2);
     return slice + branchShort + regNo.toString().slice(-3);
@@ -138,7 +141,7 @@ export default function Home() {
       branchShort,
       yearOfStudy: studyPeriod,
       yearOfPassing: monthYearPassing,
-      CGPA,
+      CGPA: CGPA || 0,
       remark: remarks,
       backlogs,
       classObtain: classObtained,
