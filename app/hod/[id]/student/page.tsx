@@ -93,7 +93,7 @@ export default function StudentListPage() {
                   {student.verified ? "✅" : "❌"}
                 </td>
                 <td className="p-3 border">
-                  <Link href={`/admin/student/${student._id}`}>View</Link>
+                  <Link href={`/hod/stu/${student._id}`}>View</Link>
                 </td>
               </tr>
             ))}

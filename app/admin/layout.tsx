@@ -28,7 +28,7 @@ export default function RootLayout({
             href={"/"}
             className="font-bold text-xl tracking-wide md:text-2xl  "
           >
-            Government College of Engineering Srirangam,Trichy 620012
+            Government College of Engineering Srirangam,Trichy-620012
           </Link>
           <h2 className="text-lg font-bold">Admin Panel</h2>
         </nav>

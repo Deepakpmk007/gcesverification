@@ -140,121 +140,12 @@ export default function StudentPage() {
             </tr>
           </thead>
           <tbody>
+            {" "}
             <tr className="border-b">
               <td className="p-3 border font-semibold bg-gray-100 capitalize">
                 id
               </td>
               <td className="p-3 border">{student._id}</td>
-            </tr>
-
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                name
-              </td>
-              <td className="p-3 border">{student.name}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                Regno
-              </td>
-              <td className="p-3 border">{student.regNo}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                date of birth
-              </td>
-              <td className="p-3 border">{student.dateOfBirth}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                degree
-              </td>
-              <td className="p-3 border">{student.degree}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                branch
-              </td>
-              <td className="p-3 border">{student.branch}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                yearOfPassing
-              </td>
-              <td className="p-3 border">{student.yearOfPassing}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                yearOfStudy
-              </td>
-              <td className="p-3 border">{student.yearOfStudy}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                backlogs
-              </td>
-              <td className="p-3 border">{student.backlogs}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                classObtain
-              </td>
-              <td className="p-3 border">{student.classObtain}</td>
-              <td>
-                <select className="border ml-2">
-                  <option value="yes">yes</option>
-                  <option value="no">No</option>
-                </select>
-              </td>
             </tr>
             <tr className="border-b">
               <td className="p-3 border font-semibold bg-gray-100 capitalize">
@@ -317,6 +208,128 @@ export default function StudentPage() {
             </tr>
           </tbody>
         </table>
+        <div className="mt-5">
+          <table className="w-full border-collapse border border-gray-300 shadow-md">
+            <thead>
+              <tr className="bg-blue-500 text-white">
+                <th className="p-3 border">Field</th>
+                <th className="p-3 border">Value</th>
+                <th className="p-3 border">Yes/No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  name
+                </td>
+                <td className="p-3 border">{student.name}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  Regno
+                </td>
+                <td className="p-3 border">{student.regNo}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  date of birth
+                </td>
+                <td className="p-3 border">{student.dateOfBirth}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  degree
+                </td>
+                <td className="p-3 border">{student.degree}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  branch
+                </td>
+                <td className="p-3 border">{student.branch}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  yearOfPassing
+                </td>
+                <td className="p-3 border">{student.yearOfPassing}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  yearOfStudy
+                </td>
+                <td className="p-3 border">{student.yearOfStudy}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  backlogs
+                </td>
+                <td className="p-3 border">{student.backlogs}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  classObtain
+                </td>
+                <td className="p-3 border">{student.classObtain}</td>
+                <td>
+                  <select className="border ml-2">
+                    <option value="yes">yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="mt-5">
           <button className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition">
             Verified
