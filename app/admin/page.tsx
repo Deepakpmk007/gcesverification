@@ -15,9 +15,12 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/data", {
-          cache: "no-store",
-        });
+        const response = await fetch(
+          "https://gcesverification.vercel.app/api/data",
+          {
+            cache: "no-store",
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

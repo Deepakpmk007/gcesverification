@@ -15,7 +15,9 @@ export default function StudentListPage() {
     // Fetch an array of student IDs from the first API
     const fetchStudentIds = async () => {
       try {
-        const response = await fetch(`/api/findById?id=${id}`);
+        const response = await fetch(
+          `https://gcesverification.vercel.app/api/findById?id=${id}`
+        );
         const result = await response.json();
         setIds(result?.data?.studentData ?? []);
       } catch (err) {
@@ -36,10 +38,13 @@ export default function StudentListPage() {
 
       try {
         const query = ids.map((id) => `id=${encodeURIComponent(id)}`).join("&");
-        const response = await fetch(`/api/getData?${query}`, {
-          method: "GET",
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `https://gcesverification.vercel.app/api/getData?${query}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Failed to fetch students: ${response.status}`);

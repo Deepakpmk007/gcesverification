@@ -12,7 +12,9 @@ export default function page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetch(`/api/findById?id=${id}`);
+        const data = await fetch(
+          `https://gcesverification.vercel.app/api/findById?id=${id}`
+        );
         const res = await data.json();
         setData(res.data);
       } catch (err) {

@@ -25,7 +25,9 @@ export default function StudentPage() {
 
     const fetchStudent = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/getData?id=${id}`);
+        const res = await fetch(
+          `https://gcesverification.vercel.app/api/getData?id=${id}`
+        );
         const data = await res.json();
 
         console.log("Fetched Data:", data.data[0]); // Debugging: Check API response
@@ -48,11 +50,14 @@ export default function StudentPage() {
 
   const updateUserStudentData = async (userId: string, studentId: string) => {
     try {
-      const response = await fetch("http://localhost:3000/api/new-user", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, studentId }),
-      });
+      const response = await fetch(
+        "https://gcesverification.vercel.app/api/new-user",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, studentId }),
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Failed to update user data.");
@@ -68,7 +73,7 @@ export default function StudentPage() {
   const sendEmail = async () => {
     setIsSending(true);
     const userResponse = await fetch(
-      `http://localhost:3000/api/findByEmail?email=${email}`
+      `https://gcesverification.vercel.app/api/findByEmail?email=${email}`
     );
     const userData = await userResponse.json();
 
