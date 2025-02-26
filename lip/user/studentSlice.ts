@@ -11,7 +11,7 @@ type Student = {
   university: string;
   yearOfPassing: string;
   yearOfStudy: string;
-  CGPA: number;
+  CGPA: string;
   backlogs: string;
   classObtain: string;
   remark: string;
@@ -32,7 +32,7 @@ const initialState: { value: Student } = {
     university: "",
     yearOfPassing: "",
     yearOfStudy: "",
-    CGPA: 0,
+    CGPA: "",
     backlogs: "",
     classObtain: "",
     remark: "",

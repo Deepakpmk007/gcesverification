@@ -141,7 +141,7 @@ export default function Home() {
       branchShort,
       yearOfStudy: studyPeriod,
       yearOfPassing: monthYearPassing,
-      CGPA: CGPA || 0,
+      CGPA: CGPA,
       remark: remarks,
       backlogs,
       classObtain: classObtained,
@@ -243,7 +243,7 @@ export default function Home() {
               placeholder="CGPA"
               type="text"
               label="CGPA:"
-              value={CGPA}
+              value={CGPA ?? ""}
               onChange={(e) => setCGPA(e.target.value)}
             />
             <div className="flex flex-col">
