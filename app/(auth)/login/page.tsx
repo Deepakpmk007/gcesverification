@@ -1,7 +1,7 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { signIn, getSession } from "next-auth/react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setApplicantId } from "@/lip/user/findIDSlice";
 import { useDispatch } from "react-redux";
@@ -10,28 +10,11 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const router = useRouter();
   const dispatch = useDispatch();
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session) {
-      if (session.user.role === "admin") {
-        router.push("/admin");
-      } else if (session.user.role === "hod") {
-        dispatch(setApplicantId(session.user.id));
-        router.push(`/hod/${session.user.id}`);
-      } else {
-        setError("User role not recognized");
-      }
-    }
-  }, [session, dispatch, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
 
     const res = await signIn("credentials", {
@@ -40,10 +23,22 @@ const LoginPage = () => {
       password,
     });
 
+    // console.log(res);
     if (res?.error) {
-      setError(res.error || "Invalid email or password");
+      setError("Invalid email or password");
+    } else {
+      // Fetch the session to get the user's role
+      const session = await getSession();
+      // console.log("Session:", session);
+      if (session?.user?.role === "admin") {
+        router.push("/admin");
+      } else if (session?.user?.role === "hod") {
+        dispatch(setApplicantId(session.user.id));
+        router.push(`/hod/${session.user.id}`);
+      } else {
+        setError("User role not recognized");
+      }
     }
-    setLoading(false);
   };
 
   return (
@@ -52,11 +47,8 @@ const LoginPage = () => {
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700">
-              Email
-            </label>
+            <label className="block text-gray-700">Email</label>
             <input
-              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -65,11 +57,8 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">
-              Password
-            </label>
+            <label className="block text-gray-700">Password</label>
             <input
-              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -80,10 +69,9 @@ const LoginPage = () => {
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
-            disabled={loading}
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
           >
-            {loading ? "Logging in..." : "Login"}
+            Login
           </button>
         </form>
       </div>
