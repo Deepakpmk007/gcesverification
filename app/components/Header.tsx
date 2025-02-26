@@ -1,10 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 
 function Header() {
   // const router = useRouter();
   return (
     <div className="flex flex-row justify-between min-h-[12vh] items-center px-7 py-5 font-mono">
-      <div className="hidden md:flex ">logo</div>
+      <div className="hidden md:flex ">
+        <Image src={"/gces_logo.png"} width={100} height={100} alt="gces" />
+      </div>
       <div className=" flex flex-col justify-center">
         <Link
           href={"/"}
