@@ -73,13 +73,16 @@ const UserDetails = () => {
     try {
       console.log("Submitting Data:", JSON.stringify(postData, null, 2));
 
-      const response = await fetch("http://localhost:3000/api/data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      const response = await fetch(
+        "https://gcesverification.vercel.app/api/data",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }
+      );
       const responseText = await response.text();
       sendEmail();
       router.push("/success"); // Read raw response text

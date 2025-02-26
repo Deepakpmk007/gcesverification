@@ -30,7 +30,7 @@ export default function Home() {
   const [branchShort, setBranchShort] = useState<string>(""); // Branch short form as a string
   const [studyPeriod, setStudyPeriod] = useState<string>("");
   const [monthYearPassing, setMonthYearPassing] = useState<string>("");
-  const [CGPA, setCGPA] = useState<number>(0);
+  const [CGPA, setCGPA] = useState<number>();
   const [remarks, setRemarks] = useState<string>("");
   const [backlogs, setBacklogs] = useState<string>(""); // backlogs as string
   const [classObtained, setClassObtained] = useState<string>("");
