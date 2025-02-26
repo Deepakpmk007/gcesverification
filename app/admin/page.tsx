@@ -6,11 +6,18 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
+type Student = {
+  _id: string;
+  verified: boolean;
+};
+
 export default function Page() {
   const [totalStudents, setTotalStudents] = useState(0);
   const [verifiedStudents, setVerifiedStudents] = useState(0);
   const [notVerifiedStudents, setNotVerifiedStudents] = useState(0);
   const [chartData, setChartData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,9 +35,11 @@ export default function Page() {
 
         const res = await response.json();
 
-        const verified = res.data.filter((student: any) => student.verified);
+        const verified = res.data.filter(
+          (student: Student) => student.verified
+        );
         const notVerified = res.data.filter(
-          (student: any) => !student.verified
+          (student: Student) => !student.verified
         );
 
         setTotalStudents(res.data.length);
@@ -48,48 +57,56 @@ export default function Page() {
             },
           ],
         });
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
+      } catch (error: any) {
+        console.error("Failed to fetch data:", error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  if (loading) {
+    return <p className="p-6 text-blue-500 font-semibold">Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="p-6 text-red-500 font-semibold">
+        Error: {error}. Please try again later.
+      </p>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-8 p-1">
-      <h1 className="text-2xl font-extrabold">Dashboard</h1>
+    <div className="flex flex-col gap-8 p-6">
+      <h1 className="text-3xl font-extrabold mb-4">Dashboard</h1>
 
       <div className="flex gap-5 flex-wrap">
-        <div className="p-6 bg-green-50 flex-1">
+        <div className="p-6 bg-green-100 flex-1 rounded-lg shadow-md">
           <p className="text-2xl font-bold">Total Students</p>
           <span className="text-[3rem]">{totalStudents}</span>
         </div>
-        <div className="p-6 bg-green-50 flex-1">
+        <div className="p-6 bg-green-100 flex-1 rounded-lg shadow-md">
           <p className="text-2xl font-bold">Total Verified Students</p>
           <span className="text-[3rem]">{verifiedStudents}</span>
         </div>
-        <div className="p-6 bg-green-50 flex-1">
+        <div className="p-6 bg-green-100 flex-1 rounded-lg shadow-md">
           <p className="text-2xl font-bold">Total Not Verified Students</p>
           <span className="text-[3rem]">{notVerifiedStudents}</span>
         </div>
       </div>
 
-      {/* Doughnut Chart */}
       <div className="p-6 bg-white w-[300px] rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4">Chart</h2>
+        <h2 className="text-xl font-bold mb-4">Verification Status Chart</h2>
         {chartData ? (
-          <Doughnut data={chartData} />
+          <Doughnut data={chartData} aria-label="Verification Status Chart" />
         ) : (
           <p>Loading Doughnut Chart...</p>
         )}
       </div>
-
-      {/* Pie Chart
-      <div className="p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4">Pie Chart</h2>
-        {chartData ? <Pie data={chartData} /> : <p>Loading Pie Chart...</p>}
-      </div> */}
     </div>
   );
 }

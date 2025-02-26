@@ -13,46 +13,48 @@ export default function RootLayout({
 
   const navLinks = [
     { href: `/hod/${id}`, label: "Home" },
-    { href: `/hod/${id}/student`, label: "All Student" },
-    { href: `/hod/${id}/verified`, label: "Verified Student" },
-    { href: `/hod/${id}/not-verified`, label: "Not Verified Student" },
+    { href: `/hod/${id}/student`, label: "All Students" },
+    { href: `/hod/${id}/verified`, label: "Verified Students" },
+    { href: `/hod/${id}/not-verified`, label: "Not Verified Students" },
   ];
 
   return (
     <WithAuth requiredRole="hod">
       <div className="flex flex-col h-screen">
         {/* Navbar */}
-        <nav className="flex justify-between items-center w-full p-6 bg-blue-400">
+        <nav className="flex justify-between items-center w-full p-4 bg-blue-500 text-white">
           <Link
-            href={"/"}
-            className="font-bold text-xl tracking-wide md:text-2xl  "
+            href="/"
+            className="font-bold text-lg md:text-2xl tracking-wide"
           >
-            Government College of Engineering Srirangam,Trichy-620012
+            Government College of Engineering Srirangam, Trichy-620012
           </Link>
-          <h2 className="text-lg font-bold">HOD Panel</h2>
+          <h2 className="text-lg font-semibold">HOD Panel</h2>
         </nav>
 
         {/* Sidebar & Main Content */}
-        <div className="flex flex-1 min-h-0">
+        <div className="flex flex-1">
           {/* Sidebar */}
-          <div className="bg-blue-400 flex flex-col gap-4 w-[15%] p-7">
+          <aside className="bg-blue-500 flex flex-col gap-2 w-48 p-5 text-white">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className={`px-3 py-2 rounded-sm transition duration-300 ${
-                  pathname === href ? "bg-blue-600 text-white" : "bg-blue-300"
+                className={`px-4 py-2 rounded-md transition duration-300 ${
+                  pathname === href
+                    ? "bg-blue-700"
+                    : "hover:bg-blue-600 bg-blue-400"
                 }`}
               >
                 {label}
               </Link>
             ))}
-          </div>
+          </aside>
 
           {/* Main Content (Scrollable) */}
-          <div className="flex-1 p-6 bg-blue-200 overflow-y-auto h-full">
+          <main className="flex-1 p-6 bg-blue-100 overflow-y-auto">
             {children}
-          </div>
+          </main>
         </div>
       </div>
     </WithAuth>

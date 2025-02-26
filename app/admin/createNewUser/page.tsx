@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react"; // Using Lucide React for icons
+import { Eye, EyeOff, Loader2 } from "lucide-react"; // Added Loader2 for loading state
 
 // Define the shape of the form data
 interface FormData {
@@ -19,19 +19,24 @@ export default function Register() {
     password: "",
     role: "admin", // Default role value
   });
+
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  // Handle form field changes
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Form submission handler
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const res = await fetch(
@@ -51,6 +56,8 @@ export default function Register() {
       }
     } catch (err) {
       setError("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,8 +70,18 @@ export default function Register() {
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
           Register
         </h1>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
+        {error && (
+          <p
+            className="text-red-500 text-center mb-4"
+            role="alert"
+            aria-live="assertive"
+          >
+            {error}
+          </p>
+        )}
+
+        {/* Name Input */}
         <div className="mb-4">
           <label
             htmlFor="name"
@@ -83,6 +100,7 @@ export default function Register() {
           />
         </div>
 
+        {/* Email Input */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -101,6 +119,7 @@ export default function Register() {
           />
         </div>
 
+        {/* Password Input */}
         <div className="mb-4 relative">
           <label
             htmlFor="password"
@@ -114,18 +133,21 @@ export default function Register() {
             value={formData.password}
             onChange={handleChange}
             required
+            minLength={6}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 pr-12"
             placeholder="Enter your password"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
             className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-gray-800"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
 
+        {/* Role Selection */}
         <div className="mb-6">
           <label
             htmlFor="role"
@@ -145,11 +167,17 @@ export default function Register() {
           </select>
         </div>
 
+        {/* Submit Button with Loading Indicator */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300"
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 flex items-center justify-center"
         >
-          Register
+          {loading ? (
+            <Loader2 className="animate-spin mr-2" size={20} />
+          ) : (
+            "Register"
+          )}
         </button>
       </form>
     </div>

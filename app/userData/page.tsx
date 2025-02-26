@@ -31,23 +31,54 @@ const UserDetails = () => {
         value: Array.isArray(value) ? value.join(", ") : value, // Convert array to string
       }));
   };
+  const sendEmail = async () => {
+    try {
+      const emailResponse = await fetch("http://localhost:3000/api/sendMail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: process.env.SMTP_SERVER_USERNAME, // Sender's email
+          sendTo: process.env.SMTP_SERVER_USERNAME, // Receiver's email
+          subject: "New verification", // Email subject
+          text: `${student.remark}`, // HTML formatted email
+          html: `
+            <h1>Student Details</h1>
+            <p><strong>Name:</strong> ${student.name}</p>
+            <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
+            <p><strong>Degree:</strong> ${student.degree}</p>
+            <p><strong>Branch:</strong> ${student.branch}</p>
+            <p><strong>Year of Passing:</strong> ${student.yearOfPassing}</p>
+            <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
+            <p><strong>Remark:</strong> ${student.remark}</p>
+            `,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error(
+          `Email Error: ${emailResponse.status} - ${await emailResponse.text()}`
+        );
+      }
+
+      toast.success("Data submitted and email sent successfully!");
+    } catch (error: any) {
+      toast.error(`Failed to send email: ${error.message}`);
+    }
+  };
 
   const handSubmit = async () => {
     try {
       console.log("Submitting Data:", JSON.stringify(postData, null, 2));
 
-      const response = await fetch(
-        "https://gcesverification.vercel.app/api/data",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        }
-      );
-
+      const response = await fetch("http://localhost:3000/api/data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
       const responseText = await response.text();
+      sendEmail();
       router.push("/success"); // Read raw response text
       console.log("Response Status:", response.status);
       console.log("Response Text:", responseText);

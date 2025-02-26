@@ -71,41 +71,33 @@ export default function StudentPage() {
 
   const sendEmail = async () => {
     setIsSending(true);
-    const userResponse = await fetch(
-      `https://gcesverification.vercel.app/api/findByEmail?email=${email}`
-    );
-    const userData = await userResponse.json();
-
-    if (!userResponse.ok) {
-      throw new Error(`User Fetch Error: ${userData.message}`);
-    }
-
-    const userId = userData.data._id;
-    updateUserStudentData(userId, student._id);
-
-    console.log("Fetched User ID:", userId);
-
     try {
+      const userResponse = await fetch(
+        `https://gcesverification.vercel.app/api/findByEmail?email=${email}`
+      );
+
+      if (!userResponse.ok) {
+        const errorData = await userResponse.json();
+        throw new Error(`User Fetch Error: ${errorData.message}`);
+      }
+
+      const userData = await userResponse.json();
+      const userId = userData.data._id;
+
+      console.log("Fetched User ID:", userId);
+      updateUserStudentData(userId, student._id);
+
       const emailResponse = await fetch(
         "https://gcesverification.vercel.app/api/sendMail",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-            sendTo: email, // Receiver's email
-            subject: "Verification of Student Details", // Email subject
-            text: `${student.remark}`, // HTML formatted email
-            html: `
-          <h1>Student Details</h1>
-          <p><strong>Name:</strong> ${student.name}</p>
-          <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
-          <p><strong>Degree:</strong> ${student.degree}</p>
-          <p><strong>Branch:</strong> ${student.branch}</p>
-          <p><strong>Year of Passing:</strong> ${student.yearOfPassing}</p>
-          <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
-          <p><strong>Remark:</strong> ${student.remark}</p>
-          `,
+            email: process.env.SMTP_SERVER_USERNAME,
+            sendTo: email,
+            subject: "Verification of Student Details",
+            text: `${student.remark}`,
+            html: `<h1>Student Details</h1><p><strong>Name:</strong> ${student.name}</p>`,
           }),
         }
       );
@@ -118,11 +110,13 @@ export default function StudentPage() {
 
       toast.success("Data submitted and email sent successfully!");
     } catch (error: any) {
+      console.error("Error in sendEmail function:", error.message);
       toast.error(`Failed to send email: ${error.message}`);
     } finally {
-      setIsSending(false); // Reset loading state
+      setIsSending(false);
     }
   };
+
   if (loading) return <p>Loading student data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!student) return <p>No student found</p>;

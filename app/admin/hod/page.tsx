@@ -20,6 +20,9 @@ export default async function Page() {
       throw new Error("Invalid or empty data received.");
     }
 
+    // Filter only users with the role 'hod'
+    const hodData = res.data.filter((user: any) => user.role === "hod");
+
     return (
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">HOD Data</h1>
@@ -35,7 +38,7 @@ export default async function Page() {
             </thead>
             {/* Table Body */}
             <tbody>
-              {res.data.map((hod: any, index: number) => (
+              {hodData.map((hod: any, index: number) => (
                 <tr
                   key={hod._id}
                   className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
@@ -45,6 +48,16 @@ export default async function Page() {
                   <td className="p-3 border">{hod.name}</td>
                 </tr>
               ))}
+              {hodData.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={3}
+                    className="p-3 border text-center text-gray-500"
+                  >
+                    No HOD data available.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
