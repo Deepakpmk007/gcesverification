@@ -141,7 +141,7 @@ export default function Home() {
       branchShort,
       yearOfStudy: studyPeriod,
       yearOfPassing: monthYearPassing,
-      CGPA: CGPA,
+      CGPA: CGPA ?? "",
       remark: remarks,
       backlogs,
       classObtain: classObtained,
