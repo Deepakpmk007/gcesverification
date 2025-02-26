@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
     await connectDB();
-    const user = await Users.findOne({ email }).select("_id");
+    const user = await Users.findOne({ email });
     if (!user) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
