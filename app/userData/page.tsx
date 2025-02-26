@@ -33,15 +33,17 @@ const UserDetails = () => {
   };
   const sendEmail = async () => {
     try {
-      const emailResponse = await fetch("http://localhost:3000/api/sendMail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-          sendTo: process.env.SMTP_SERVER_USERNAME, // Receiver's email
-          subject: "New verification", // Email subject
-          text: `${student.remark}`, // HTML formatted email
-          html: `
+      const emailResponse = await fetch(
+        "https://gcesverification.vercel.app/api/sendMail",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: process.env.SMTP_SERVER_USERNAME, // Sender's email
+            sendTo: process.env.SMTP_SERVER_USERNAME, // Receiver's email
+            subject: "New verification", // Email subject
+            text: `${student.remark}`, // HTML formatted email
+            html: `
             <h1>Student Details</h1>
             <p><strong>Name:</strong> ${student.name}</p>
             <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
@@ -51,8 +53,9 @@ const UserDetails = () => {
             <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
             <p><strong>Remark:</strong> ${student.remark}</p>
             `,
-        }),
-      });
+          }),
+        }
+      );
 
       if (!emailResponse.ok) {
         throw new Error(

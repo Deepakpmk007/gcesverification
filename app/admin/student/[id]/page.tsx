@@ -269,9 +269,6 @@ export default function StudentPage() {
             className="p-2 border rounded"
           >
             <option value="">Select Email</option>
-            <option value="deepakpmk007@gmail.com">
-              deepakpmk007@gmail.com
-            </option>
             <option value="deepakpmk9600@gmail.com">
               deepakpmk9600@gmail.com
             </option>
