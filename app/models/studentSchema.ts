@@ -12,7 +12,7 @@ export interface IStudent extends Document {
   university?: string;
   yearOfPassing?: string;
   yearOfStudy?: string;
-  CGPA?: number;
+  CGPA?: string;
   backlogs?: string;
   classObtain?: string;
   remark?: string;
@@ -68,7 +68,7 @@ const StudentSchema: Schema<IStudent> = new mongoose.Schema(
       type: String,
     },
     CGPA: {
-      type: Number,
+      type: String,
     },
     backlogs: {
       type: String,
