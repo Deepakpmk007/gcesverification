@@ -30,7 +30,7 @@ export default function Home() {
   const [branchShort, setBranchShort] = useState<string>(""); // Branch short form as a string
   const [studyPeriod, setStudyPeriod] = useState<string>("");
   const [monthYearPassing, setMonthYearPassing] = useState<string>("");
-  const [CGPA, setCGPA] = useState<number>();
+  const [CGPA, setCGPA] = useState<string>();
   const [remarks, setRemarks] = useState<string>("");
   const [backlogs, setBacklogs] = useState<string>(""); // backlogs as string
   const [classObtained, setClassObtained] = useState<string>("");
@@ -244,7 +244,7 @@ export default function Home() {
               type="text"
               label="CGPA:"
               value={CGPA}
-              onChange={(e) => setCGPA(Number(e.target.value))}
+              onChange={(e) => setCGPA(e.target.value)}
             />
             <div className="flex flex-col">
               <label htmlFor="class" className="text-lg font-medium">
