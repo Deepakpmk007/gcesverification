@@ -241,7 +241,7 @@ export default function StudentPage() {
           </tr>
         </tbody>
       </table>
-      <div className="border p-4 rounded shadow-lg bg-white">
+      <div className="border p-4 rounded shadow-lg bg-white" ref={componentRef}>
         <div className="mt-5">
           <table className="w-full border-collapse border border-gray-300 shadow-md">
             <thead>
