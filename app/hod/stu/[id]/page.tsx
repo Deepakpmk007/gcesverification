@@ -266,7 +266,7 @@ export default function StudentPage() {
             </thead>
             <tbody>
               {fields.map((field) => (
-                <tr key={field} className="border-b">
+                <tr key={field} className="border-b h-14">
                   <td className="p-3 border font-semibold bg-gray-200 capitalize">
                     {field}
                   </td>
