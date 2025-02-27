@@ -83,7 +83,7 @@ export default function StudentPage() {
     const pdf = new jsPDF("p", "mm", "a4");
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    const pdfHeight = 50;
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("student_details.pdf");
   };
@@ -246,7 +246,7 @@ export default function StudentPage() {
           </tr>
         </tbody>
       </table>
-      <div className="border p-4 rounded shadow-lg bg-white" ref={componentRef}>
+      <div className="border p-4 rounded shadow-lg bg-white">
         <div
           className="mt-5"
           ref={componentRef}
