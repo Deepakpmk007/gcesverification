@@ -13,6 +13,7 @@ export default function StudentPage() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState<string>("");
   const [isSending, setIsSending] = useState(false);
+  const [fieldValues, setFieldValues] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
@@ -121,6 +122,22 @@ export default function StudentPage() {
       setIsSending(false); // Reset loading state
     }
   };
+
+  const handleSelectionChange = (field: string, value: string) => {
+    setFieldValues((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const fields = [
+    "name",
+    "regNo",
+    "dateOfBirth",
+    "degree",
+    "branch",
+    "yearOfPassing",
+    "yearOfStudy",
+    "backlogs",
+    "classObtain",
+  ];
   if (loading) return <p>Loading student data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!student) return <p>No student found</p>;
@@ -135,84 +152,84 @@ export default function StudentPage() {
       </button>
 
       <h1 className="text-2xl font-bold mb-4">Student Details</h1>
+      <div className="border p-4 rounded shadow-lg bg-white"></div>
+      <table className="w-full border-collapse border border-gray-300 shadow-md">
+        <thead>
+          <tr className="bg-blue-500 text-white">
+            <th className="p-3 border">Field</th>
+            <th className="p-3 border">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {" "}
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              id
+            </td>
+            <td className="p-3 border">{student._id}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              remark
+            </td>
+            <td className="p-3 border">{student.remark}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              verified
+            </td>
+            <td className="p-3 border">
+              {student.verified ? `✅ verified` : `❌ not-verified`}
+            </td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              verifiedBy
+            </td>
+            <td className="p-3 border">{student.verifiedBy}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              agencyName
+            </td>
+            <td className="p-3 border">{student.agencyName}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              senderEmail
+            </td>
+            <td className="p-3 border">{student.senderEmail}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              contact
+            </td>
+            <td className="p-3 border">{student.contact}</td>
+          </tr>
+          <tr className="border-b">
+            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+              File Download Link
+            </td>
+            <td className="flex gap-4">
+              {student.fileIds?.map((fileId: string, i: number) => (
+                <a
+                  key={fileId}
+                  href={appWriterStorage.getFileDownload(
+                    "676d799200277b1b2951",
+                    `${fileId}`
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  {i}-File-{fileId}
+                </a>
+              ))}
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div className="border p-4 rounded shadow-lg bg-white">
-        <table className="w-full border-collapse border border-gray-300 shadow-md">
-          <thead>
-            <tr className="bg-blue-500 text-white">
-              <th className="p-3 border">Field</th>
-              <th className="p-3 border">Value</th>
-              <th className="p-3 border">Yes/No</th>
-            </tr>
-          </thead>
-          <tbody>
-            {" "}
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                id
-              </td>
-              <td className="p-3 border">{student._id}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                remark
-              </td>
-              <td className="p-3 border">{student.remark}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                verified
-              </td>
-              <td className="p-3 border">
-                {student.verified ? `✅ verified` : `❌ not-verified`}
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                verifiedBy
-              </td>
-              <td className="p-3 border">{student.verifiedBy}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                agencyName
-              </td>
-              <td className="p-3 border">{student.agencyName}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                senderEmail
-              </td>
-              <td className="p-3 border">{student.senderEmail}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                contact
-              </td>
-              <td className="p-3 border">{student.contact}</td>
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                File Download Link
-              </td>
-              <td className="flex gap-4">
-                {student.fileIds?.map((fileId: string, i: number) => (
-                  <a
-                    key={fileId}
-                    href={appWriterStorage.getFileDownload(
-                      "676d799200277b1b2951",
-                      `${fileId}`
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    {i}-File-{fileId}
-                  </a>
-                ))}
-              </td>
-            </tr>
-          </tbody>
-        </table>
         <div className="mt-5">
           <table className="w-full border-collapse border border-gray-300 shadow-md">
             <thead>
@@ -223,115 +240,28 @@ export default function StudentPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  name
-                </td>
-                <td className="p-3 border">{student.name}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  Regno
-                </td>
-                <td className="p-3 border">{student.regNo}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  date of birth
-                </td>
-                <td className="p-3 border">{student.dateOfBirth}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  degree
-                </td>
-                <td className="p-3 border">{student.degree}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  branch
-                </td>
-                <td className="p-3 border">{student.branch}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  yearOfPassing
-                </td>
-                <td className="p-3 border">{student.yearOfPassing}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  yearOfStudy
-                </td>
-                <td className="p-3 border">{student.yearOfStudy}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  backlogs
-                </td>
-                <td className="p-3 border">{student.backlogs}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3 border font-semibold bg-gray-100 capitalize">
-                  classObtain
-                </td>
-                <td className="p-3 border">{student.classObtain}</td>
-                <td>
-                  <select className="border ml-2">
-                    <option value="yes">yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </td>
-              </tr>
+              {fields.map((field) => (
+                <tr key={field} className="border-b">
+                  <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                    {field}
+                  </td>
+                  <td className="p-3 border">{student[field]}</td>
+                  <td className=""></td>
+                  <td>
+                    <select
+                      className="border ml-2"
+                      value={fieldValues[field] || ""}
+                      onChange={(e) =>
+                        handleSelectionChange(field, e.target.value)
+                      }
+                    >
+                      <option value="">Select</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
