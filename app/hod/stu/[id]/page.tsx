@@ -87,7 +87,7 @@ export default function StudentPage() {
 
     let y = 47;
     fields.forEach((field) => {
-      doc.setFillColor((y % 20 === 7 ? 245 : 255).toString());
+      doc.setFillColor(250, 250, 250);
       doc.rect(10, y - 7, 190, 10, "F");
       doc.text(`${field}:`, 15, y);
       doc.text(`${student[field] || "N/A"}`, 80, y);
