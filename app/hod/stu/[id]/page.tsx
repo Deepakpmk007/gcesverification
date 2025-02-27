@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
+import { jsPDF } from "jspdf";
 
 export default function StudentPage() {
   const { id } = useParams(); // Get student ID from URL
@@ -69,6 +70,32 @@ export default function StudentPage() {
       console.error("Error updating user data:", error.message);
       toast.error(`Error: ${error.message}`);
     }
+  };
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(22);
+    doc.text("Student Details", 105, 20, { align: "center" });
+
+    doc.setFontSize(14);
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 230, 230);
+    doc.rect(10, 30, 190, 10, "F");
+    doc.text("Field", 15, 37);
+    doc.text("Value", 80, 37);
+    doc.text("Status", 150, 37);
+
+    let y = 47;
+    fields.forEach((field) => {
+      doc.setFillColor((y % 20 === 7 ? 245 : 255).toString());
+      doc.rect(10, y - 7, 190, 10, "F");
+      doc.text(`${field}:`, 15, y);
+      doc.text(`${student[field] || "N/A"}`, 80, y);
+      doc.text(`${fieldValues[field] || "Not Selected"}`, 150, y);
+      y += 10;
+    });
+
+    doc.save("student_details.pdf");
   };
 
   const sendEmail = async () => {
@@ -246,7 +273,7 @@ export default function StudentPage() {
                     {field}
                   </td>
                   <td className="p-3 border">{student[field]}</td>
-                  <td className=""></td>
+                  {/* <td className="p-3 border">{student.field}</td> */}
                   <td>
                     <select
                       className="border ml-2"
@@ -266,7 +293,10 @@ export default function StudentPage() {
           </table>
         </div>
         <div className="mt-5">
-          <button className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition">
+          <button
+            className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
+            onClick={generatePDF}
+          >
             Verified
           </button>
         </div>
