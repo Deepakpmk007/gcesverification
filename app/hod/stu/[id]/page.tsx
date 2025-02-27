@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
+import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
 export default function StudentPage() {
@@ -73,18 +74,18 @@ export default function StudentPage() {
     }
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF("p", "pt", "a4");
-    if (componentRef.current) {
-      doc.html(componentRef.current, {
-        callback: function (pdf) {
-          pdf.save("student_details.pdf");
-        },
-        html2canvas: { scale: 0.5 },
-      });
-    } else {
-      console.error("Component reference is null");
-    }
+  const generatePDF = async () => {
+    const element = componentRef.current;
+    if (!element) return;
+
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("student_details.pdf");
   };
 
   const sendEmail = async () => {
@@ -246,7 +247,15 @@ export default function StudentPage() {
         </tbody>
       </table>
       <div className="border p-4 rounded shadow-lg bg-white" ref={componentRef}>
-        <div className="mt-5">
+        <div
+          className="mt-5"
+          ref={componentRef}
+          style={{
+            backgroundColor: "#f4f4f4",
+            padding: "20px",
+            borderRadius: "8px",
+          }}
+        >
           <table className="w-full border-collapse border border-gray-300 shadow-md">
             <thead>
               <tr className="bg-blue-500 text-white">
@@ -258,14 +267,13 @@ export default function StudentPage() {
             <tbody>
               {fields.map((field) => (
                 <tr key={field} className="border-b">
-                  <td className="p-3 border font-semibold bg-gray-100 capitalize">
+                  <td className="p-3 border font-semibold bg-gray-200 capitalize">
                     {field}
                   </td>
-                  <td className="p-3 border">{student[field]}</td>
-                  {/* <td className="p-3 border">{student.field}</td> */}
+                  <td className="p-3 border bg-white">{student[field]}</td>
                   <td>
                     <select
-                      className="border ml-2"
+                      className="border ml-2 p-1 rounded"
                       value={fieldValues[field] || ""}
                       onChange={(e) =>
                         handleSelectionChange(field, e.target.value)
