@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ export default function StudentPage() {
   const [email, setEmail] = useState<string>("");
   const [isSending, setIsSending] = useState(false);
   const [fieldValues, setFieldValues] = useState<{ [key: string]: string }>({});
+  const componentRef = useRef(null);
 
   useEffect(() => {
     console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
@@ -73,29 +74,13 @@ export default function StudentPage() {
   };
 
   const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(22);
-    doc.text("Student Details", 105, 20, { align: "center" });
-
-    doc.setFontSize(14);
-    doc.setDrawColor(0);
-    doc.setFillColor(230, 230, 230);
-    doc.rect(10, 30, 190, 10, "F");
-    doc.text("Field", 15, 37);
-    doc.text("Value", 80, 37);
-    doc.text("Status", 150, 37);
-
-    let y = 47;
-    fields.forEach((field) => {
-      doc.setFillColor(250, 250, 250);
-      doc.rect(10, y - 7, 190, 10, "F");
-      doc.text(`${field}:`, 15, y);
-      doc.text(`${student[field] || "N/A"}`, 80, y);
-      doc.text(`${fieldValues[field] || "Not Selected"}`, 150, y);
-      y += 10;
+    const doc = new jsPDF("p", "pt", "a4");
+    doc.html(componentRef.current, {
+      callback: function (pdf) {
+        pdf.save("student_details.pdf");
+      },
+      html2canvas: { scale: 0.5 },
     });
-
-    doc.save("student_details.pdf");
   };
 
   const sendEmail = async () => {
