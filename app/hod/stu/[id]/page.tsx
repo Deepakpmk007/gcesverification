@@ -75,12 +75,16 @@ export default function StudentPage() {
 
   const generatePDF = () => {
     const doc = new jsPDF("p", "pt", "a4");
-    doc.html(componentRef.current, {
-      callback: function (pdf) {
-        pdf.save("student_details.pdf");
-      },
-      html2canvas: { scale: 0.5 },
-    });
+    if (componentRef.current) {
+      doc.html(componentRef.current, {
+        callback: function (pdf) {
+          pdf.save("student_details.pdf");
+        },
+        html2canvas: { scale: 0.5 },
+      });
+    } else {
+      console.error("Component reference is null");
+    }
   };
 
   const sendEmail = async () => {
