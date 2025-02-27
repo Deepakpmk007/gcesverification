@@ -273,7 +273,7 @@ export default function StudentPage() {
                   <td className="p-3 border bg-white">{student[field]}</td>
                   <td>
                     <select
-                      className="border ml-2 p-1 rounded"
+                      className="ml-2 p-1 rounded"
                       value={fieldValues[field] || ""}
                       onChange={(e) =>
                         handleSelectionChange(field, e.target.value)
