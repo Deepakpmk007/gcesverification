@@ -6,6 +6,7 @@ import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+const [signature, setSignature] = useState<string | null>(null);
 
 export default function StudentPage() {
   const { id } = useParams(); // Get student ID from URL
@@ -73,6 +74,18 @@ export default function StudentPage() {
       toast.error(`Error: ${error.message}`);
     }
   };
+  const handleSignatureUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSignature(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const generatePDF = async () => {
     const element = componentRef.current;
@@ -85,7 +98,10 @@ export default function StudentPage() {
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = 120;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(imgData, "PNG", marginX, marginY, pdfWidth, pdfHeight);
+    if (signature) {
+      pdf.addImage(signature, "PNG", 140, 250, 50, 30); // Adjust position & size
+    }
     pdf.save("student_details.pdf");
   };
 
@@ -290,6 +306,17 @@ export default function StudentPage() {
             </tbody>
           </table>
         </div>
+        <input type="file" accept="image/*" onChange={handleSignatureUpload} />
+
+        {/* Show Preview */}
+        {signature && (
+          <img
+            src={signature}
+            alt="Signature Preview"
+            className="mt-2 w-40 border"
+          />
+        )}
+
         <div className="mt-5">
           <button
             className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
