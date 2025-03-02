@@ -77,10 +77,11 @@ export default function StudentPage() {
   const generatePDF = async () => {
     const element = componentRef.current;
     if (!element) return;
-
     const canvas = await html2canvas(element);
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
+    const marginX = 10; // Left & Right margin (10mm)
+    const marginY = 10; // Top & Bottom margin (10mm)
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = 120;
