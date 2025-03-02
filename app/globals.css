@@ -32,3 +32,9 @@
     grid-template-rows: 1fr 2fr;
   }
 }
+
+@layer base {
+  img {
+    display: initial;
+  }
+}
