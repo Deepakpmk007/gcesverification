@@ -305,8 +305,8 @@ export default function StudentPage() {
               ))}
             </tbody>
           </table>
-        {/* </div>
-        <input type="file" accept="image/*" onChange={handleSignatureUpload} />
+        </div>
+        {/* <input type="file" accept="image/*" onChange={handleSignatureUpload} /> */}
 
         {/* Show Preview */}
         {/* {signature && (
