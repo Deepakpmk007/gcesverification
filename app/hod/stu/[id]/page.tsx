@@ -289,7 +289,7 @@ export default function StudentPage() {
           </h2>
           <table className="w-full border-collapse border mt-16 border-black shadow-md">
             <thead>
-              <tr className=" text-white">
+              <tr className=" text-black">
                 <th className="p-3 border">Field</th>
                 <th className="p-3 border">Value</th>
                 <th className="p-3 border">Yes/No</th>
