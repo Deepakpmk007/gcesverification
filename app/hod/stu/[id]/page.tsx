@@ -320,7 +320,7 @@ export default function StudentPage() {
             </tbody>
           </table>
           {signature && (
-            <div className="mt-5 text-center border-none outline-none self-center">
+            <div className="mt-5 text-center border-none outline-none left-0">
               <img
                 src={signature}
                 alt="Signature"
