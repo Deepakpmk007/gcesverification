@@ -203,19 +203,17 @@ export default function StudentPage() {
         </thead>
         <tbody>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
-              id
-            </td>
+            <td className="p-3 border font-semibold bg-white capitalize">id</td>
             <td className="p-3 border">{student._id}</td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               remark
             </td>
             <td className="p-3 border">{student.remark}</td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               verified
             </td>
             <td className="p-3 border">
@@ -223,25 +221,25 @@ export default function StudentPage() {
             </td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               verifiedBy
             </td>
             <td className="p-3 border">{student.verifiedBy}</td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               agencyName
             </td>
             <td className="p-3 border">{student.agencyName}</td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               senderEmail
             </td>
             <td className="p-3 border">{student.senderEmail}</td>
           </tr>
           <tr className="border-b">
-            <td className="p-3 border font-semibold bg-gray-100 capitalize">
+            <td className="p-3 border font-semibold bg-white capitalize">
               contact
             </td>
             <td className="p-3 border">{student.contact}</td>
@@ -302,13 +300,13 @@ export default function StudentPage() {
             <tbody>
               {fields.map((field) => (
                 <tr key={field} className="border-b h-14">
-                  <td className="p-3 border font-semibold  capitalize">
+                  <td className="p-3 border font-semibold bg-white capitalize">
                     {field}
                   </td>
                   <td className="p-3 border bg-white">{student[field]}</td>
                   <td>
                     <select
-                      className="ml-2 p-1 rounded bg-transparent text-center"
+                      className="ml-2 p-1 rounded bg-white bg-transparent text-center"
                       value={fieldValues[field] || ""}
                       onChange={(e) =>
                         handleSelectionChange(field, e.target.value)
