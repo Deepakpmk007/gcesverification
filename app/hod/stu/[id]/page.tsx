@@ -281,9 +281,7 @@ export default function StudentPage() {
           className="mt-5 flex flex-col items-center g-10"
           ref={componentRef}
           style={{
-            backgroundColor: "#f4f4f4",
             padding: "20px",
-            borderRadius: "8px",
           }}
         >
           <h2 className="text-2xl font-bold">
@@ -304,7 +302,7 @@ export default function StudentPage() {
                     {field}
                   </td>
                   <td className="p-3 border bg-white">{student[field]}</td>
-                  <td>
+                  <td className="p-3 border bg-white">
                     <select
                       className="ml-2 p-1 rounded bg-white bg-transparent text-center"
                       value={fieldValues[field] || ""}
