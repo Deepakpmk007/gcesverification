@@ -260,7 +260,7 @@ export default function StudentPage() {
           <h2 className="text-2xl font-bold">
             Government College of Engineering Srirangam, Trichy-620012
           </h2>
-          <table className="w-full border-collapse border border-gray-300 shadow-md">
+          <table className="w-full border-collapse border mt-6 border-gray-300 shadow-md">
             <thead>
               <tr className="bg-blue-500 text-white">
                 <th className="p-3 border">Field</th>
