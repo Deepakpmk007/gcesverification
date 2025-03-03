@@ -17,6 +17,7 @@ export default function StudentPage() {
   const [isSending, setIsSending] = useState(false);
   const [fieldValues, setFieldValues] = useState<{ [key: string]: string }>({});
   const componentRef = useRef(null);
+  const [signature, setSignature] = useState<string | null>(null);
 
   useEffect(() => {
     console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
@@ -77,15 +78,24 @@ export default function StudentPage() {
   const generatePDF = async () => {
     const element = componentRef.current;
     if (!element) return;
+
     const canvas = await html2canvas(element);
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
-    const marginX = 10; // Left & Right margin (10mm)
-    const marginY = 10; // Top & Bottom margin (10mm)
-    const imgProps = pdf.getImageProperties(imgData);
+
+    // Add student details as an image
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = 120;
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    // If a signature is uploaded, add it to the PDF
+    if (signature) {
+      const imgProps = pdf.getImageProperties(signature);
+      const sigWidth = 50;
+      const sigHeight = (imgProps.height * sigWidth) / imgProps.width;
+      pdf.addImage(signature, "PNG", 140, 250, sigWidth, sigHeight);
+    }
+
     pdf.save("student_details.pdf");
   };
 
@@ -143,6 +153,19 @@ export default function StudentPage() {
 
   const handleSelectionChange = (field: string, value: string) => {
     setFieldValues((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSignatureUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setSignature(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const fields = [
@@ -246,6 +269,15 @@ export default function StudentPage() {
           </tr>
         </tbody>
       </table>
+      <div className="mt-5">
+        <label className="block font-semibold">Upload Signature:</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleSignatureUpload}
+          className="border p-2 rounded"
+        />
+      </div>
       <div className="border p-4 rounded shadow-lg bg-white">
         <div
           className="mt-5 flex flex-col items-center g-10"
@@ -291,6 +323,16 @@ export default function StudentPage() {
               ))}
             </tbody>
           </table>
+          {signature && (
+            <div className="mt-5 text-center">
+              <h3 className="text-lg font-semibold">Authorized Signature</h3>
+              <img
+                src={signature}
+                alt="Signature"
+                className="w-32 h-auto mx-auto"
+              />
+            </div>
+          )}
         </div>
         <div className="mt-5">
           <button
