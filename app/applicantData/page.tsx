@@ -27,7 +27,7 @@ const ApplicantDataPage: React.FC = () => {
     <main className="flex flex-col items-center w-full px-6 py-12 space-y-10 bg-gray-50 min-h-screen">
       <div className="flex flex-col gap-10 items-center bg-white shadow-lg rounded-lg w-full max-w-4xl p-6 sm:p-10">
         <h1 className="text-2xl font-bold text-gray-800 text-center sm:text-3xl">
-          Applicant Data
+          Agency/Verifier Details
         </h1>
         <main className="grid grid-cols-1 sm:grid-cols-1 gap-6 w-full">
           <InputComponent

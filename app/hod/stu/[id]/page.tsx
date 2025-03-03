@@ -170,14 +170,14 @@ export default function StudentPage() {
 
   const fields = [
     "name",
-    "regNo",
-    "dateOfBirth",
+    "reg no",
+    "date of Birth",
     "degree",
     "branch",
-    "yearOfPassing",
-    "yearOfStudy",
+    "year of Passing",
+    "year of Study",
     "backlogs",
-    "classObtain",
+    "class obtain",
   ];
   if (loading) return <p>Loading student data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -222,19 +222,19 @@ export default function StudentPage() {
           </tr>
           <tr className="border-b">
             <td className="p-3 border font-semibold bg-white capitalize">
-              verifiedBy
+              verified By
             </td>
             <td className="p-3 border">{student.verifiedBy}</td>
           </tr>
           <tr className="border-b">
             <td className="p-3 border font-semibold bg-white capitalize">
-              agencyName
+              agency name
             </td>
             <td className="p-3 border">{student.agencyName}</td>
           </tr>
           <tr className="border-b">
             <td className="p-3 border font-semibold bg-white capitalize">
-              senderEmail
+              sender email
             </td>
             <td className="p-3 border">{student.senderEmail}</td>
           </tr>
