@@ -291,9 +291,9 @@ export default function StudentPage() {
           <h2 className="text-2xl font-bold">
             Government College of Engineering Srirangam, Trichy-620012
           </h2>
-          <table className="w-full border-collapse border mt-16 border-gray-300 shadow-md">
+          <table className="w-full border-collapse border mt-16 border-black shadow-md">
             <thead>
-              <tr className="bg-blue-500 text-white">
+              <tr className=" text-white">
                 <th className="p-3 border">Field</th>
                 <th className="p-3 border">Value</th>
                 <th className="p-3 border">Yes/No</th>
@@ -302,7 +302,7 @@ export default function StudentPage() {
             <tbody>
               {fields.map((field) => (
                 <tr key={field} className="border-b h-14">
-                  <td className="p-3 border font-semibold bg-gray-200 capitalize">
+                  <td className="p-3 border font-semibold  capitalize">
                     {field}
                   </td>
                   <td className="p-3 border bg-white">{student[field]}</td>
@@ -324,13 +324,14 @@ export default function StudentPage() {
             </tbody>
           </table>
           {signature && (
-            <div className="mt-5 text-center">
+            <div className="mt-5 text-center border-none outline-none items-end">
               <h3 className="text-lg font-semibold">Authorized Signature</h3>
               <img
                 src={signature}
                 alt="Signature"
-                className="w-32 h-auto mx-auto"
+                className="w-32 h-auto mx-auto border-none outline-none"
               />
+              <h2>HOD Signature</h2>
             </div>
           )}
         </div>
