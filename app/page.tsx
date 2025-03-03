@@ -160,7 +160,7 @@ export default function Home() {
   };
   return (
     <>
-      <Toaster position="bottom-right" reverseOrder={false} />{" "}
+      <Toaster position="top-right" reverseOrder={false} />{" "}
       {/* ✅ Toaster added */}
       <Header />
       <main className="flex flex-col items-center w-full px-6 py-12 bg-gray-50 min-h-screen gap-10">
