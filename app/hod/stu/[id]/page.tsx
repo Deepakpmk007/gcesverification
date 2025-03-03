@@ -321,13 +321,12 @@ export default function StudentPage() {
           </table>
           {signature && (
             <div className="mt-5 text-center border-none outline-none items-end">
-              <h3 className="text-lg font-semibold">Authorized Signature</h3>
               <img
                 src={signature}
                 alt="Signature"
                 className="w-32 h-auto mx-auto border-none outline-none"
               />
-              <h2>HOD Signature</h2>
+              <h2 className="text-lg font-semibold">HOD Signature</h2>
             </div>
           )}
         </div>
