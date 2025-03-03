@@ -74,18 +74,18 @@ export default function StudentPage() {
       toast.error(`Error: ${error.message}`);
     }
   };
-  const handleSignatureUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSignature(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleSignatureUpload = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setSignature(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const generatePDF = async () => {
     const element = componentRef.current;
@@ -305,17 +305,17 @@ export default function StudentPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        {/* </div>
         <input type="file" accept="image/*" onChange={handleSignatureUpload} />
 
         {/* Show Preview */}
-        {signature && (
+        {/* {signature && (
           <img
             src={signature}
             alt="Signature Preview"
             className="mt-2 w-40 border"
           />
-        )}
+        )}  */}
 
         <div className="mt-5">
           <button
