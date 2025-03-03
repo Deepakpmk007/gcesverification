@@ -249,7 +249,7 @@ export default function StudentPage() {
       </table>
       <div className="border p-4 rounded shadow-lg bg-white">
         <div
-          className="mt-5"
+          className="mt-5 flex flex-col items-center"
           ref={componentRef}
           style={{
             backgroundColor: "#f4f4f4",
@@ -257,6 +257,7 @@ export default function StudentPage() {
             borderRadius: "8px",
           }}
         >
+          <h2>Government College of Engineering Srirangam, Trichy-620012</h2>
           <table className="w-full border-collapse border border-gray-300 shadow-md">
             <thead>
               <tr className="bg-blue-500 text-white">
