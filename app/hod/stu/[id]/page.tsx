@@ -179,7 +179,6 @@ export default function StudentPage() {
           </tr>
         </thead>
         <tbody>
-          {" "}
           <tr className="border-b">
             <td className="p-3 border font-semibold bg-gray-100 capitalize">
               id

@@ -8,6 +8,8 @@ import { useAppDispatch } from "@/lip/store";
 import { useRouter } from "next/navigation";
 import { appWriterStorage } from "./utils/appWriter";
 import { ID } from "appwrite";
+import { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 type Department = {
   name: string;
@@ -99,8 +101,11 @@ export default function Home() {
   };
 
   const fileUploadFile = async () => {
-    if (files.length == 0) return;
+    if (files.length == 0) {
+      return toast.error("Please select a file to upload!");
+    }
     setUploading(true);
+    const uploadToast = toast.loading("Uploading files...");
     try {
       const uploadIds: string[] = [];
       for (const file of files) {
@@ -114,11 +119,13 @@ export default function Home() {
       }
 
       setFileIds(uploadIds);
+      toast.success("Files uploaded successfully!");
     } catch (error) {
       console.error("File upload failed", error);
-      alert("Failed to upload files.");
+      toast.error("Failed to upload files. Please try again.");
     } finally {
       setUploading(false);
+      toast.dismiss(uploadToast);
     }
   };
 
@@ -153,6 +160,8 @@ export default function Home() {
   };
   return (
     <>
+      <Toaster position="bottom-right" reverseOrder={false} />{" "}
+      {/* ✅ Toaster added */}
       <Header />
       <main className="flex flex-col items-center w-full px-6 py-12 bg-gray-50 min-h-screen gap-10">
         {/* Form Section */}
