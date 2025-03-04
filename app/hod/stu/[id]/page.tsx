@@ -314,13 +314,12 @@ export default function StudentPage() {
             </div>
           )}
         </div>
+
         <div className="mt-5">
           <input
             placeholder="verified by"
             onChange={(e) => setVerifiedBy(e.target.value)}
           />
-        </div>
-        <div className="mt-5">
           <button
             className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
             onClick={generatePDF}
