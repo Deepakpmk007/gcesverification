@@ -40,7 +40,7 @@ const UserDetails = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-            sendTo: "deepakpmk007@gmail.com", // Receiver's email
+            // sendTo: "deepakpmk007@gmail.com", // Receiver's email
             subject: "New verification", // Email subject
             text: `${student.remark}`, // HTML formatted email
             html: `
