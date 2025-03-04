@@ -70,7 +70,7 @@ export default function StudentPage() {
       });
       const data = await res.json();
       generatePDF();
-      <Link href={`/hod/stu/${student._id}/verified`}>View</Link>;
+      router.push(`/hod/stu/${student._id}/verified`);
       if (data.success) {
         toast.success("Student data updated successfully");
       } else {
