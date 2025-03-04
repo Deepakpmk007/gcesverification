@@ -54,25 +54,30 @@ export default function StudentPage() {
   }, [id]);
   // console.log(student);
 
-  const updateUserStudentData = async (userId: string, studentId: string) => {
+  const updateUserStudentData = async () => {
     try {
-      const response = await fetch(
-        "https://gcesverification.vercel.app/api/new-user",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, studentId }),
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to update user data.");
+      setIsSending(true);
+      const res = await fetch("https://gcesverification.vercel.app/api/data", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: student._id,
+          verifiedBy,
+        }),
+      });
+      const data = await res.json();
+      generatePDF();
+      if (data.success) {
+        toast.success("Student data updated successfully");
+      } else {
+        toast.error(data.error || "Failed to update student data");
       }
-      console.log("Update Successful:", data);
-      toast.success("Student ID added to user data successfully!");
-    } catch (error: any) {
-      console.error("Error updating user data:", error.message);
-      toast.error(`Error: ${error.message}`);
+    } catch (error) {
+      toast.error("Failed to update student data");
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -98,58 +103,6 @@ export default function StudentPage() {
     }
 
     pdf.save("student_details.pdf");
-  };
-
-  const sendEmail = async () => {
-    setIsSending(true);
-    const userResponse = await fetch(
-      `https://gcesverification.vercel.app/api/findByEmail?email=${email}`
-    );
-    const userData = await userResponse.json();
-
-    if (!userResponse.ok) {
-      throw new Error(`User Fetch Error: ${userData.message}`);
-    }
-
-    const userId = userData.data._id;
-    updateUserStudentData(userId, student._id);
-
-    console.log("Fetched User ID:", userId);
-
-    try {
-      const emailResponse = await fetch("/api/sendMail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-          sendTo: email, // Receiver's email
-          subject: "Verification of Student Details", // Email subject
-          text: `${student.remark}`, // HTML formatted email
-          html: `
-          <h1>Student Details</h1>
-          <p><strong>Name:</strong> ${student.name}</p>
-          <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
-          <p><strong>Degree:</strong> ${student.degree}</p>
-          <p><strong>Branch:</strong> ${student.branch}</p>
-          <p><strong>Year of Passing:</strong> ${student.yearOfPassing}</p>
-          <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
-          <p><strong>Remark:</strong> ${student.remark}</p>
-          `,
-        }),
-      });
-
-      if (!emailResponse.ok) {
-        throw new Error(
-          `Email Error: ${emailResponse.status} - ${await emailResponse.text()}`
-        );
-      }
-
-      toast.success("Data submitted and email sent successfully!");
-    } catch (error: any) {
-      toast.error(`Failed to send email: ${error.message}`);
-    } finally {
-      setIsSending(false); // Reset loading state
-    }
   };
 
   const handleSelectionChange = (field: string, value: string) => {
@@ -339,40 +292,16 @@ export default function StudentPage() {
         </div>
         <div className="mt-5 flex gap-5">
           <input
-            className="border"
+            className="border px-3"
             onChange={(e) => setVerifiedBy(e.target.value)}
           />
           <button
             className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
-            onClick={generatePDF}
+            onClick={updateUserStudentData}
           >
             Verified
           </button>
         </div>
-        {/* <div className="flex p-5 gap-5">
-          <h1>Send Email</h1>
-          <select
-            name="email"
-            id="email"
-            onChange={(e) => setEmail(e.target.value)}
-            className="p-2 border rounded"
-          >
-            <option value="">Select Email</option>
-            <option value="deepakpmk007@gmail.com">
-              deepakpmk007@gmail.com
-            </option>
-            <option value="deepakpmk9600@gmail.com">
-              deepakpmk9600@gmail.com
-            </option>
-          </select>
-          <button
-            className="bg-blue-400 font-semibold rounded-md p-2"
-            onClick={sendEmail}
-            disabled={isSending}
-          >
-            {isSending ? "Sending..." : `Send Email to ${email}`}
-          </button>
-        </div> */}
       </div>
     </div>
   );
