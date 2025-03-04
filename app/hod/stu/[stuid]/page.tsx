@@ -9,7 +9,7 @@ import { jsPDF } from "jspdf";
 import { Link } from "lucide-react";
 
 export default function StudentPage() {
-  const { id } = useParams(); // Get student ID from URL
+  const { stuid } = useParams(); // Get student ID from URL
   const router = useRouter(); // Router for navigation
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -22,9 +22,9 @@ export default function StudentPage() {
   const [signature, setSignature] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
+    console.log("URL Parameter ID:", stuid); // Debugging: Check if id is correct
 
-    if (!id) {
+    if (!stuid) {
       setError("No student ID found in URL");
       setLoading(false);
       return;
@@ -33,7 +33,7 @@ export default function StudentPage() {
     const fetchStudent = async () => {
       try {
         const res = await fetch(
-          `https://gcesverification.vercel.app/api/getData?id=${id}`
+          `https://gcesverification.vercel.app/api/getData?id=${stuid}`
         );
         const data = await res.json();
 
@@ -52,7 +52,7 @@ export default function StudentPage() {
     };
 
     fetchStudent();
-  }, [id]);
+  }, [stuid]);
   // console.log(student);
 
   const updateUserStudentData = async () => {

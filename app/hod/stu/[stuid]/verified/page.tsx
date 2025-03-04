@@ -6,12 +6,12 @@ export default function page() {
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { id } = useParams();
+  const { stuid } = useParams();
 
   useEffect(() => {
-    console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
+    console.log("URL Parameter ID:", stuid); // Debugging: Check if id is correct
 
-    if (!id) {
+    if (!stuid) {
       setError("No student ID found in URL");
       setLoading(false);
       return;
@@ -20,7 +20,7 @@ export default function page() {
     const fetchStudent = async () => {
       try {
         const res = await fetch(
-          `https://gcesverification.vercel.app/api/getData?id=${id}`
+          `https://gcesverification.vercel.app/api/getData?id=${stuid}`
         );
         const data = await res.json();
 
@@ -39,6 +39,6 @@ export default function page() {
     };
 
     fetchStudent();
-  }, [id]);
+  }, [stuid]);
   return <div>hi</div>;
 }
