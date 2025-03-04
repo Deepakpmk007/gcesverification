@@ -6,6 +6,7 @@ import { appWriterStorage } from "@/app/utils/appWriter";
 import toast from "react-hot-toast";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { Link } from "lucide-react";
 
 export default function StudentPage() {
   const { id } = useParams(); // Get student ID from URL
@@ -69,6 +70,7 @@ export default function StudentPage() {
       });
       const data = await res.json();
       generatePDF();
+      <Link href={`/hod/stu/${student._id}/verified`}>View</Link>;
       if (data.success) {
         toast.success("Student data updated successfully");
       } else {
