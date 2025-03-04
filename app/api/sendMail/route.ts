@@ -22,7 +22,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { email, subject, text, html }: EmailRequest = await req.json();
 
-    const recipient = process.env.SITE_MAIL_RECIEVER as string;
+    const recipient = process.env.SMTP_SERVER_USERNAME as string;
     if (!recipient) {
       return NextResponse.json(
         { success: false, error: "No recipient email provided." },
