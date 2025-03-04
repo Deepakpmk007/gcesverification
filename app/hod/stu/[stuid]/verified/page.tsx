@@ -109,7 +109,7 @@ export default function VerifyStudentPage() {
 
       {/* PDF Upload and Send Email */}
       {student && (
-        <form onSubmit={sendEmail} className="mt-4 flex flex-col gap-2">
+        <form className="mt-4 flex flex-col gap-2">
           <input
             type="file"
             accept="application/pdf"
@@ -119,6 +119,7 @@ export default function VerifyStudentPage() {
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 rounded-md"
+            onClick={sendEmail}
           >
             Send Email to {student.senderEmail}
           </button>
