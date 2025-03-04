@@ -40,7 +40,7 @@ const UserDetails = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-            sendTo: process.env.SMTP_SERVER_USERNAME, // Receiver's email
+            sendTo: "deepakpmk007@gmail.com", // Receiver's email
             subject: "New verification", // Email subject
             text: `${student.remark}`, // HTML formatted email
             html: `
@@ -137,15 +137,12 @@ const UserDetails = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex items-center justify-between w-full mt-6">
-        <button className="px-6 py-3 border border-black rounded-lg text-lg font-medium hover:bg-red-600 hover:text-white transition duration-300">
-          ← Back
-        </button>
+      <div className="flex items-center justify-end w-full mt-6">
         <button
           className="px-6 py-3 border border-black rounded-lg text-lg font-medium hover:bg-green-400 hover:text-white transition duration-300"
           onClick={handSubmit}
         >
-          Next →
+          Submit
         </button>
       </div>
     </main>
