@@ -56,8 +56,8 @@ export default function VerifyStudentPage() {
     }
 
     const formData = new FormData();
-    formData.append("email", email);
-    formData.append("sendTo", student?.email || "");
+    formData.append("email", process.env.SMTP_SERVER_USERNAME || "");
+    formData.append("sendTo", student.senderEmail || "");
     formData.append("subject", `Verification for ${student?.name}`);
     formData.append(
       "text",
@@ -66,10 +66,13 @@ export default function VerifyStudentPage() {
     formData.append("pdf", pdf);
 
     try {
-      const res = await fetch("/api/sendEmail", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://gcesverification.vercel.app/api/pdfSend",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
       setMessage(data.success ? "Email sent successfully!" : data.error);
@@ -90,7 +93,7 @@ export default function VerifyStudentPage() {
           className="border p-2"
         />
         <button type="submit" className="bg-blue-500 text-white p-2">
-          Send Email
+          Email send to {student?.senderEmail}
         </button>
       </form>
 
