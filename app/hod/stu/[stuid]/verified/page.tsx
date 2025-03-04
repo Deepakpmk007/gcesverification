@@ -12,36 +12,39 @@ export default function VerifyStudentPage() {
   const [message, setMessage] = useState("");
 
   // Fetch student data when "Verify" button is clicked
-  const fetchStudent = async () => {
-    if (!stuid) {
-      setError("Please enter a student ID.");
-      return;
-    }
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch(
-        `https://gcesverification.vercel.app/api/getData?id=${stuid}`
-      );
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
-      const data = await res.json();
-      if (data.success) {
-        setStudent(data.data[0]);
-      } else {
-        throw new Error(data.message || "Student not found");
+  useEffect(() => {
+    const fetchStudent = async () => {
+      if (!stuid) {
+        setError("Please enter a student ID.");
+        return;
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "Failed to fetch student data");
-      } else {
-        setError("Failed to fetch student data");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+      setLoading(true);
+      setError("");
+      try {
+        const res = await fetch(
+          `https://gcesverification.vercel.app/api/getData?id=${stuid}`
+        );
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
+        const data = await res.json();
+        if (data.success) {
+          setStudent(data.data[0]);
+        } else {
+          throw new Error(data.message || "Student not found");
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message || "Failed to fetch student data");
+        } else {
+          setError("Failed to fetch student data");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStudent();
+  }),
+    [stuid];
   // Handle PDF upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPdf(e.target.files?.[0] || null);
@@ -93,7 +96,7 @@ export default function VerifyStudentPage() {
           className="border p-2"
         />
         <button type="submit" className="bg-blue-500 text-white p-2">
-          Email send to {student?.senderEmail}
+          Email send to {student.senderEmail}
         </button>
       </form>
 
