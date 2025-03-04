@@ -16,8 +16,11 @@ export default function StudentPage() {
   const [email, setEmail] = useState<string>("");
   const [isSending, setIsSending] = useState(false);
   const [fieldValues, setFieldValues] = useState<{ [key: string]: string }>({});
+  const [verifiedBy, setVerifiedBy] = useState<string>("");
   const componentRef = useRef(null);
   const [signature, setSignature] = useState<string | null>(null);
+
+  const stuId = student._id;
 
   useEffect(() => {
     console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
@@ -108,7 +111,7 @@ export default function StudentPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id, verifiedBy }),
+          body: JSON.stringify({ stuId, verifiedBy }),
         }
       );
 
@@ -292,6 +295,12 @@ export default function StudentPage() {
                   </td>
                 </tr>
               ))}
+              <tr className="border-b h-14">
+                <td className="p-3 border font-semibold bg-white capitalize">
+                  verified By
+                </td>
+                <td className="p-3 border bg-white">{verifiedBy}</td>
+              </tr>
             </tbody>
           </table>
           {signature && (
@@ -304,6 +313,12 @@ export default function StudentPage() {
               <h2 className="text-lg font-semibold">HOD Signature</h2>
             </div>
           )}
+        </div>
+        <div className="mt-5">
+          <input
+            placeholder="verified by"
+            onChange={(e) => setVerifiedBy(e.target.value)}
+          />
         </div>
         <div className="mt-5">
           <button
