@@ -17,14 +17,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const subject = formData.get("subject") as string;
     const text = formData.get("text") as string;
     const pdfFile = formData.get("pdf") as File;
-
-    // if (!pdfFile) {
-    //   return NextResponse.json(
-    //     { success: false, error: "No PDF file uploaded." },
-    //     { status: 400 }
-    //   );
-    // }
-
     const buffer = await pdfFile.arrayBuffer();
     const attachment = Buffer.from(buffer);
 

@@ -250,7 +250,7 @@ export default function StudentPage() {
                     <a
                       key={fileId}
                       href={appWriterStorage.getFileDownload(
-                        "676d799200277b1b2951",
+                        "67c68a2e0022fc16e9d5",
                         `${fileId}`
                       )}
                       target="_blank"

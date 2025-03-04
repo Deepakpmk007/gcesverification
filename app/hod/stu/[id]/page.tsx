@@ -99,57 +99,32 @@ export default function StudentPage() {
     pdf.save("student_details.pdf");
   };
 
-  const sendEmail = async () => {
-    setIsSending(true);
-    const userResponse = await fetch(
-      `https://gcesverification.vercel.app/api/findByEmail?email=${email}`
-    );
-    const userData = await userResponse.json();
-
-    if (!userResponse.ok) {
-      throw new Error(`User Fetch Error: ${userData.message}`);
-    }
-
-    const userId = userData.data._id;
-    updateUserStudentData(userId, student._id);
-
-    console.log("Fetched User ID:", userId);
-
+  async function updateStudentData(id: string, verifiedBy: string) {
     try {
-      const emailResponse = await fetch("/api/sendMail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: process.env.SMTP_SERVER_USERNAME, // Sender's email
-          sendTo: email, // Receiver's email
-          subject: "Verification of Student Details", // Email subject
-          text: `${student.remark}`, // HTML formatted email
-          html: `
-          <h1>Student Details</h1>
-          <p><strong>Name:</strong> ${student.name}</p>
-          <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
-          <p><strong>Degree:</strong> ${student.degree}</p>
-          <p><strong>Branch:</strong> ${student.branch}</p>
-          <p><strong>Year of Passing:</strong> ${student.yearOfPassing}</p>
-          <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
-          <p><strong>Remark:</strong> ${student.remark}</p>
-          `,
-        }),
-      });
+      const response = await fetch(
+        "https://gcesverification.vercel.app/api/data",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id, verifiedBy }),
+        }
+      );
 
-      if (!emailResponse.ok) {
-        throw new Error(
-          `Email Error: ${emailResponse.status} - ${await emailResponse.text()}`
-        );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
       }
 
-      toast.success("Data submitted and email sent successfully!");
-    } catch (error: any) {
-      toast.error(`Failed to send email: ${error.message}`);
-    } finally {
-      setIsSending(false); // Reset loading state
+      console.log("Success:", data);
+      return data;
+    } catch (error) {
+      console.error("Error updating data:", error);
+      return null;
     }
-  };
+  }
 
   const handleSelectionChange = (field: string, value: string) => {
     setFieldValues((prev) => ({ ...prev, [field]: value }));
@@ -170,14 +145,14 @@ export default function StudentPage() {
 
   const fields = [
     "name",
-    "reg no",
-    "date of Birth",
+    "regNo",
+    "dateOfBirth",
     "degree",
     "branch",
-    "year of Passing",
-    "year of Study",
+    "yearOfPassing",
+    "yearOfStudy",
     "backlogs",
-    "class obtain",
+    "classObtain",
   ];
   if (loading) return <p>Loading student data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -253,7 +228,7 @@ export default function StudentPage() {
                 <a
                   key={fileId}
                   href={appWriterStorage.getFileDownload(
-                    "676d799200277b1b2951",
+                    "67c68a2e0022fc16e9d5",
                     `${fileId}`
                   )}
                   target="_blank"
@@ -338,30 +313,6 @@ export default function StudentPage() {
             Verified
           </button>
         </div>
-        {/* <div className="flex p-5 gap-5">
-          <h1>Send Email</h1>
-          <select
-            name="email"
-            id="email"
-            onChange={(e) => setEmail(e.target.value)}
-            className="p-2 border rounded"
-          >
-            <option value="">Select Email</option>
-            <option value="deepakpmk007@gmail.com">
-              deepakpmk007@gmail.com
-            </option>
-            <option value="deepakpmk9600@gmail.com">
-              deepakpmk9600@gmail.com
-            </option>
-          </select>
-          <button
-            className="bg-blue-400 font-semibold rounded-md p-2"
-            onClick={sendEmail}
-            disabled={isSending}
-          >
-            {isSending ? "Sending..." : `Send Email to ${email}`}
-          </button>
-        </div> */}
       </div>
     </div>
   );

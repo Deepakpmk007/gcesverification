@@ -110,7 +110,7 @@ export default function Home() {
       const uploadIds: string[] = [];
       for (const file of files) {
         const response = await appWriterStorage.createFile(
-          "676d799200277b1b2951",
+          "67c68a2e0022fc16e9d5",
           ID.unique(),
           file
         );

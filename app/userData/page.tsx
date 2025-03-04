@@ -31,6 +31,7 @@ const UserDetails = () => {
         value: Array.isArray(value) ? value.join(", ") : value, // Convert array to string
       }));
   };
+
   const sendEmail = async () => {
     try {
       const emailResponse = await fetch(
