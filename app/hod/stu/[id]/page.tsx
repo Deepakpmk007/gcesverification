@@ -14,6 +14,7 @@ export default function StudentPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [email, setEmail] = useState<string>("");
+  const [verifiedBy, setVerifiedBy] = useState<string>("");
   const [isSending, setIsSending] = useState(false);
   const [fieldValues, setFieldValues] = useState<{ [key: string]: string }>({});
   const componentRef = useRef(null);
@@ -331,6 +332,7 @@ export default function StudentPage() {
           )}
         </div>
         <div className="mt-5">
+          <input onChange={(e) => setVerifiedBy(e.target.value)} />
           <button
             className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
             onClick={generatePDF}
