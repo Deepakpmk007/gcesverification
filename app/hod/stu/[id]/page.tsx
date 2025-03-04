@@ -318,6 +318,12 @@ export default function StudentPage() {
                   </td>
                 </tr>
               ))}
+              <tr className="p-3 border h-14">
+                <td className="p-3 border font-semibold bg-white capitalize">
+                  verified
+                </td>
+                <td className="p-3 border bg-white">{verifiedBy}</td>
+              </tr>
             </tbody>
           </table>
           {signature && (
@@ -331,8 +337,11 @@ export default function StudentPage() {
             </div>
           )}
         </div>
-        <div className="mt-5">
-          <input onChange={(e) => setVerifiedBy(e.target.value)} />
+        <div className="mt-5 flex gap-5">
+          <input
+            className="border"
+            onChange={(e) => setVerifiedBy(e.target.value)}
+          />
           <button
             className="bg-green-400 px-4 py-2 rounded-lg hover:bg-green-500 transition"
             onClick={generatePDF}
