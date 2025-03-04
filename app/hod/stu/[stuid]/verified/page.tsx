@@ -80,56 +80,19 @@ export default function VerifyStudentPage() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold">Student Verification</h2>
+      <h2 className="text-xl font-bold">Upload & Send PDF</h2>
 
-      {/* Student ID Input */}
-      <div className="flex gap-2 mt-3">
+      <form onSubmit={sendEmail} className="mt-4 flex flex-col gap-2">
         <input
-          type="text"
-          placeholder="Enter Student ID"
-          value={stuid}
-          onChange={(e) => setStuid(e.target.value)}
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileChange}
           className="border p-2"
         />
-        <button onClick={fetchStudent} className="bg-blue-500 text-white p-2">
-          Verify
+        <button type="submit" className="bg-blue-500 text-white p-2">
+          Send Email
         </button>
-      </div>
-
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {/* Display Student Details */}
-      {student && (
-        <div className="mt-4 p-4 border">
-          <h3 className="text-lg font-bold">Student Details</h3>
-          <p>Name: {student.name}</p>
-          <p>Email: {student.email}</p>
-          <p>Verified: {student.verified ? "Yes" : "No"}</p>
-
-          {/* PDF Upload and Send Email */}
-          <form onSubmit={sendEmail} className="mt-4 flex flex-col gap-2">
-            <input
-              type="email"
-              placeholder="Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="border p-2"
-            />
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={handleFileChange}
-              required
-              className="border p-2"
-            />
-            <button type="submit" className="bg-green-500 text-white p-2">
-              Send Email
-            </button>
-          </form>
-        </div>
-      )}
+      </form>
 
       {message && <p className="mt-2">{message}</p>}
     </div>
