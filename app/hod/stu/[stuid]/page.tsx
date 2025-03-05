@@ -88,18 +88,21 @@ export default function StudentPage() {
     if (!element) return;
 
     const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+    const imgData = canvas.toDataURL("image/jpeg", 0.7); // Lower quality JPEG
+    const pdf = new jsPDF({
+      orientation: "p",
+      unit: "mm",
+      format: "a4",
+      compress: true, // Enable compression
+    });
 
-    // Add student details as an image
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = 120;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
-    // If a signature is uploaded, add it to the PDF
     if (signature) {
       const imgProps = pdf.getImageProperties(signature);
-      const sigWidth = 50;
+      const sigWidth = 30;
       const sigHeight = (imgProps.height * sigWidth) / imgProps.width;
       pdf.addImage(signature, "PNG", 140, 250, sigWidth, sigHeight);
     }
