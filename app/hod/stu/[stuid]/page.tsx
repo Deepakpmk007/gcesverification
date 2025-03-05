@@ -102,7 +102,7 @@ export default function StudentPage() {
 
     if (signature) {
       const imgProps = pdf.getImageProperties(signature);
-      const sigWidth = 30;
+      const sigWidth = 40;
       const sigHeight = (imgProps.height * sigWidth) / imgProps.width;
       pdf.addImage(signature, "PNG", 140, 250, sigWidth, sigHeight);
     }
@@ -237,33 +237,39 @@ export default function StudentPage() {
       </div>
       <div className="border p-4 rounded shadow-lg bg-white">
         <div
-          className="mt-5 flex flex-col items-center g-10"
+          className="mt-5 flex flex-col items-center w-full"
           ref={componentRef}
           style={{
-            padding: "20px",
+            width: "210mm", // A4 width
+            minHeight: "297mm", // A4 height
+            padding: "20mm", // Standard margins
+            backgroundColor: "white",
           }}
         >
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-bold text-center">
             Government College of Engineering Srirangam, Trichy-620012
           </h2>
-          <table className="w-full border-collapse border mt-16 border-black shadow-md">
+
+          <table className="w-full border-collapse border mt-10 border-black shadow-md">
             <thead>
-              <tr className=" text-black">
-                <th className="p-3 border">Field</th>
-                <th className="p-3 border">Value</th>
-                <th className="p-3 border">Yes/No</th>
+              <tr className="bg-gray-200 text-black">
+                <th className="p-3 border text-center w-1/3">Field</th>
+                <th className="p-3 border text-center w-1/3">Value</th>
+                <th className="p-3 border text-center w-1/3">Yes/No</th>
               </tr>
             </thead>
             <tbody>
               {fields.map((field) => (
-                <tr key={field} className="border-b h-14">
-                  <td className="p-3 border font-semibold bg-white capitalize">
+                <tr key={field} className="border-b h-12">
+                  <td className="p-3 border font-semibold bg-white capitalize text-center">
                     {field}
                   </td>
-                  <td className="p-3 border bg-white">{student[field]}</td>
-                  <td className="p-3 border bg-white">
+                  <td className="p-3 border bg-white text-center">
+                    {student[field]}
+                  </td>
+                  <td className="p-3 border bg-white text-center">
                     <select
-                      className="ml-2 p-1 rounded bg-white bg-transparent text-center"
+                      className="p-1 rounded bg-transparent text-center"
                       value={fieldValues[field] || ""}
                       onChange={(e) =>
                         handleSelectionChange(field, e.target.value)
@@ -276,25 +282,29 @@ export default function StudentPage() {
                   </td>
                 </tr>
               ))}
-              <tr className="p-3 border h-14">
-                <td className="p-3 border font-semibold bg-white capitalize">
-                  verified
+              <tr className="border h-14">
+                <td className="p-3 border font-semibold bg-white capitalize text-center">
+                  Verified
                 </td>
-                <td className="p-3 border bg-white">{verifiedBy}</td>
+                <td className="p-3 border bg-white text-center" colSpan={2}>
+                  {verifiedBy}
+                </td>
               </tr>
             </tbody>
           </table>
-          {/* {signature && (
-            <div className="mt-5 text-center border-none outline-none left-0">
+
+          {signature && (
+            <div className="mt-10 text-center">
               <img
                 src={signature}
                 alt="Signature"
-                className="w-32 h-auto mx-auto border-none outline-none"
+                className="w-32 h-auto mx-auto border-none"
               />
               <h2 className="text-lg font-semibold">HOD Signature</h2>
             </div>
-          )} */}
+          )}
         </div>
+
         <div className="mt-5 flex gap-5">
           <input
             className="border px-3"
