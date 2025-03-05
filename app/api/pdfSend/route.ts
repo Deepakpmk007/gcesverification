@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer, { Transporter } from "nodemailer";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb", // Increase limit (default is 4MB)
+    },
+  },
+};
+
 const transporter: Transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
