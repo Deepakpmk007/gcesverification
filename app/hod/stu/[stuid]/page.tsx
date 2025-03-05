@@ -312,7 +312,7 @@ export default function StudentPage() {
               <img
                 src={signature}
                 alt="Signature"
-                className="w-fit h-auto mx-auto border-none"
+                className="w-[50px] h-[20px] mx-auto border-none"
               />
               <h2 className="text-lg font-semibold">HOD Signature</h2>
             </div>
