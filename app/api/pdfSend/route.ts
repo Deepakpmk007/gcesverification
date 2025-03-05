@@ -3,7 +3,9 @@ import nodemailer from "nodemailer";
 
 export const config = {
   api: {
-    bodyParser: false, // Disable default bodyParser
+    bodyParser: {
+      sizeLimit: "30mb", // Increase to 30MB (or adjust as needed)
+    }, // Disable default bodyParser
   },
 };
 
