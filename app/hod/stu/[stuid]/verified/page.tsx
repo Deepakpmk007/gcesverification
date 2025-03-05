@@ -62,7 +62,7 @@ export default function VerifyStudentPage() {
     }
 
     const formData = new FormData();
-    formData.append("email", process.env.NEXT_PUBLIC_SMTP_USERNAME || "");
+    formData.append("email", process.env.SMTP_SERVER_USERNAME || "");
     formData.append("sendTo", student.senderEmail);
     formData.append("subject", `Verification for ${student.name}`);
     formData.append(
