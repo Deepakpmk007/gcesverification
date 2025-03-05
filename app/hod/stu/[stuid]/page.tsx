@@ -102,9 +102,23 @@ export default function StudentPage() {
 
     if (signature) {
       const imgProps = pdf.getImageProperties(signature);
-      const sigWidth = 30;
+      const sigWidth = 40; // Set the signature width
       const sigHeight = (imgProps.height * sigWidth) / imgProps.width;
-      pdf.addImage(signature, "PNG", 140, 250, sigWidth, sigHeight);
+
+      // Get PDF page width and height
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      // Position the signature at the bottom-right corner
+      const sigX = pageWidth - sigWidth - 20; // 20px margin from the right
+      const sigY = pageHeight - sigHeight - 20; // 20px margin from the bottom
+
+      pdf.addImage(signature, "PNG", sigX, sigY, sigWidth, sigHeight);
+
+      // Add "HOD Signature" text below the signature
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(12);
+      pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 10);
     }
 
     pdf.save("student_details.pdf");
