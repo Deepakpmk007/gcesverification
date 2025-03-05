@@ -71,6 +71,7 @@ export default function VerifyStudentPage() {
     );
     formData.append("pdf", pdf);
 
+    console.log(formData);
     try {
       const res = await fetch(
         "https://gcesverification.vercel.app/api/pdfSend",
@@ -80,7 +81,11 @@ export default function VerifyStudentPage() {
         }
       );
 
-      const data = await res.json();
+      const rawText = await res.text();
+      console.log("Raw response from server:", rawText);
+
+      // Try parsing it manually
+      const data = JSON.parse(rawText);
       setMessage(
         data.success
           ? "Email sent successfully!"
