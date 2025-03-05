@@ -284,7 +284,7 @@ export default function StudentPage() {
               </tr>
             </tbody>
           </table>
-          {signature && (
+          {/* {signature && (
             <div className="mt-5 text-center border-none outline-none left-0">
               <img
                 src={signature}
@@ -293,7 +293,7 @@ export default function StudentPage() {
               />
               <h2 className="text-lg font-semibold">HOD Signature</h2>
             </div>
-          )}
+          )} */}
         </div>
         <div className="mt-5 flex gap-5">
           <input
