@@ -48,8 +48,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   } catch (error) {
     console.error("Email sending failed:", error);
+
     return NextResponse.json(
-      { success: false, error: "Email sending failed" },
+      {
+        success: false,
+        error: "Email sending failed",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
