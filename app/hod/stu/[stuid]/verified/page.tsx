@@ -98,7 +98,6 @@ export default function VerifyStudentPage() {
       {loading && <p className="text-blue-500">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* Display Student Details */}
       {student && (
         <div className="mt-4 p-4 border rounded-md bg-gray-100">
           <h3 className="text-lg font-semibold">Student Details</h3>
@@ -106,8 +105,6 @@ export default function VerifyStudentPage() {
           <p>Email: {student.senderEmail}</p>
         </div>
       )}
-
-      {/* PDF Upload and Send Email */}
       {student && (
         <form className="mt-4 flex flex-col gap-2">
           <input

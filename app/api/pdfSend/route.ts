@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+export const config = {
+  api: {
+    bodyParser: false, // Disable default bodyParser
+  },
+};
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
