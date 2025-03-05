@@ -22,18 +22,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const formData = await req.formData();
     console.log([...formData.entries()]); // Debug: Log form data
 
-    const email = formData.get("email") as string;
+    // const email = formData.get("email") as string;
     const sendTo = formData.get("sendTo") as string;
     const subject = formData.get("subject") as string;
     const text = formData.get("text") as string;
     const pdfFile = formData.get("pdf") as File;
-
-    if (!email || !sendTo || !pdfFile) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
 
     console.log("📂 Received file:", pdfFile.name);
 
@@ -41,7 +34,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const attachment = Buffer.from(buffer);
 
     const mailOptions = {
-      from: email,
+      from: process.env.SMTP_SERVER_USERNAME,
       to: sendTo,
       subject: subject,
       text: text,
