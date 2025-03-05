@@ -308,7 +308,7 @@ export default function StudentPage() {
           </table>
 
           {signature && (
-            <div className="mt-10 text-right">
+            <div className="mt-10 flex justify-end items-end w-full">
               <img
                 src={signature}
                 alt="Signature"
