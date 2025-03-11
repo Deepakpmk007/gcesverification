@@ -303,7 +303,7 @@ export default function StudentPage() {
               </tr>
             </tbody>
           </table>
-          {/* 
+          {/*           
           {signature && (
             <div className="mt-10 flex justify-end items-end w-full flex-col">
               <img
