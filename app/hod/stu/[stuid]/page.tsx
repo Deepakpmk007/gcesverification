@@ -87,8 +87,8 @@ export default function StudentPage() {
     const element = componentRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL("image/jpeg", 0.7);
+    const canvas = await html2canvas(element, { scale: 2 }); // Higher resolution for clarity
+    const imgData = canvas.toDataURL("image/jpeg", 0.9); // Higher quality
 
     const pdf = new jsPDF({
       orientation: "p",
@@ -98,24 +98,26 @@ export default function StudentPage() {
     });
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = 120;
+    const aspectRatio = canvas.height / canvas.width;
+    const pdfHeight = pdfWidth * aspectRatio; // Dynamically scale height
+
     pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
     if (signature) {
-      const sigWidth = 40; // Width of the signature
-      const sigHeight = 20; // Adjust height accordingly
+      const sigWidth = 50; // Increased signature size
+      const sigHeight = 25; // Adjusted proportionally
 
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
-      const sigX = pageWidth - sigWidth - 20; // Right margin
-      const sigY = pageHeight - sigHeight - 20; // Bottom margin
+      const sigX = pageWidth - sigWidth - 15; // Right margin
+      const sigY = pageHeight - sigHeight - 15; // Bottom margin
 
       pdf.addImage(signature, "PNG", sigX, sigY, sigWidth, sigHeight);
 
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(12);
-      pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 10);
+      pdf.setFontSize(14);
+      pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 12);
     }
 
     pdf.save("student_details.pdf");
