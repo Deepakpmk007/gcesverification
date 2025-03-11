@@ -4,14 +4,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type ApplicentState = {
   agencyName: string;
   senderEmail: string;
-  contact: number;
+  contact: string;
 };
 
 // Define the initial state value
 const initialStateValue: ApplicentState = {
   agencyName: "",
   senderEmail: "",
-  contact: 0,
+  contact: "",
 };
 
 // Create the slice

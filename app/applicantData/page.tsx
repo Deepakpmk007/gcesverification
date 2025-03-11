@@ -11,7 +11,7 @@ const ApplicantDataPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [agencyName, setAgencyName] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
-  const [contact, setContact] = useState(0);
+  const [contact, setContact] = useState("");
 
   const handleClick = () => {
     const applicentData = {
@@ -51,7 +51,7 @@ const ApplicantDataPage: React.FC = () => {
             type="text"
             label="Contact Number:"
             value={contact}
-            onChange={(e) => setContact(parseInt(e.target.value))}
+            onChange={(e) => setContact(e.target.value)}
           />
         </main>
       </div>
