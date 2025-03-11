@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function VerifyStudentPage() {
   // Student ID input
@@ -98,6 +99,7 @@ export default function VerifyStudentPage() {
 
   return (
     <div className="p-6 max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
+      <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-xl font-bold mb-4">Student Verification</h2>
 
       {loading && <p className="text-blue-500">Loading...</p>}
