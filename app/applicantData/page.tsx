@@ -58,11 +58,13 @@ const ApplicantDataPage: React.FC = () => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-between w-full max-w-4xl px-4">
-        <button className="group flex items-center justify-center gap-2 px-5 py-3 border border-black rounded-lg text-lg font-medium relative transition duration-300 hover:bg-red-600 hover:text-white">
-          <span className="text-black group-hover:-translate-x-2 group-hover:text-white transition-transform duration-300">
-            ←
+        <button
+          className="group flex items-center justify-center gap-2 px-5 py-3 border border-black rounded-lg text-lg font-medium relative transition duration-300 hover:bg-green-400 hover:text-white"
+          onClick={() => router.back()}
+        >
+          <span className="text-black group-hover:translate-x-2 group-hover:text-white transition-transform duration-300 ">
+            ← Back
           </span>
-          Back
         </button>
         <button
           className="group flex items-center justify-center gap-2 px-5 py-3 border border-black rounded-lg text-lg font-medium relative transition duration-300 hover:bg-green-400 hover:text-white"
