@@ -88,12 +88,13 @@ export default function StudentPage() {
     if (!element) return;
 
     const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL("image/jpeg", 0.7); // Lower quality JPEG
+    const imgData = canvas.toDataURL("image/jpeg", 0.7);
+
     const pdf = new jsPDF({
       orientation: "p",
       unit: "mm",
       format: "a4",
-      compress: true, // Enable compression
+      compress: true,
     });
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -101,21 +102,17 @@ export default function StudentPage() {
     pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
     if (signature) {
-      const imgProps = pdf.getImageProperties(signature);
-      const sigWidth = 40; // Set the signature width
-      const sigHeight = (imgProps.height * sigWidth) / imgProps.width;
+      const sigWidth = 40; // Width of the signature
+      const sigHeight = 20; // Adjust height accordingly
 
-      // Get PDF page width and height
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
-      // Position the signature at the bottom-right corner
-      const sigX = pageWidth - sigWidth - 20; // 20px margin from the right
-      const sigY = pageHeight - sigHeight - 20; // 20px margin from the bottom
+      const sigX = pageWidth - sigWidth - 20; // Right margin
+      const sigY = pageHeight - sigHeight - 20; // Bottom margin
 
       pdf.addImage(signature, "PNG", sigX, sigY, sigWidth, sigHeight);
 
-      // Add "HOD Signature" text below the signature
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(12);
       pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 10);
