@@ -5,12 +5,10 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function VerifyStudentPage() {
-  // Student ID input
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
-  const [message, setMessage] = useState("");
   const { stuid } = useParams();
 
   // Fetch student data when Student ID changes
@@ -32,11 +30,13 @@ export default function VerifyStudentPage() {
         } else {
           setError("Student not found");
           setStudent(null);
+          toast.error("Student not found!");
         }
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to fetch student data"
         );
+        toast.error("Failed to fetch student data.");
       } finally {
         setLoading(false);
       }
@@ -47,23 +47,29 @@ export default function VerifyStudentPage() {
 
   // Handle PDF upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPdf(e.target.files?.[0] || null);
+    const file = e.target.files?.[0] || null;
+    setPdf(file);
+    if (file) {
+      toast.success(`✅ File selected: ${file.name}`, {
+        duration: 3000,
+        icon: "📄",
+      });
+    }
   };
 
   // Send email with the uploaded PDF
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!pdf) {
-      setMessage("Please upload a PDF file.");
+      toast.error("⚠️ Please upload a PDF file.");
       return;
     }
     if (!student || !student.senderEmail) {
-      setMessage("No valid student email found.");
+      toast.error("⚠️ No valid student email found.");
       return;
     }
 
     const formData = new FormData();
-    // formData.append("email", process.env.SMTP_SERVER_USERNAME || "");
     formData.append("email", student.senderEmail);
     formData.append("subject", `Verification for ${student.name}`);
     formData.append(
@@ -72,7 +78,7 @@ export default function VerifyStudentPage() {
     );
     formData.append("pdf", pdf);
 
-    console.log(formData);
+    const toastId = toast.loading("📨 Sending email...");
     try {
       const res = await fetch(
         "https://gcesverification.vercel.app/api/pdfSend",
@@ -85,21 +91,35 @@ export default function VerifyStudentPage() {
       const rawText = await res.text();
       console.log("Raw response from server:", rawText);
 
-      // Try parsing it manually
       const data = JSON.parse(rawText);
-      setMessage(
-        data.success
-          ? "Email sent successfully!"
-          : data.error || "Error sending email."
-      );
+      if (data.success) {
+        toast.success("✅ Email sent successfully!", {
+          id: toastId,
+          icon: "🎉",
+        });
+      } else {
+        toast.error(data.error || "❌ Error sending email.", { id: toastId });
+      }
     } catch (error) {
-      setMessage("Error sending email.");
+      toast.error("❌ Error sending email.", { id: toastId });
     }
   };
 
   return (
     <div className="p-6 max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
-      <Toaster position="top-right" reverseOrder={false} />
+      {/* Improved Toaster with better positioning */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+            fontSize: "16px",
+          },
+        }}
+      />
+
       <h2 className="text-xl font-bold mb-4">Student Verification</h2>
 
       {loading && <p className="text-blue-500">Loading...</p>}
@@ -122,15 +142,13 @@ export default function VerifyStudentPage() {
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded-md"
+            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
             onClick={sendEmail}
           >
             Send Email to {student.senderEmail}
           </button>
         </form>
       )}
-
-      {message && <p className="mt-2 text-green-600">{message}</p>}
     </div>
   );
 }
