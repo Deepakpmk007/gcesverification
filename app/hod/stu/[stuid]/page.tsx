@@ -87,8 +87,13 @@ export default function StudentPage() {
     const element = componentRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element, { scale: 2 }); // Higher resolution for clarity
-    const imgData = canvas.toDataURL("image/jpeg", 0.9); // Higher quality
+    // Capture high-resolution image of the table
+    const canvas = await html2canvas(element, {
+      scale: 3, // Higher resolution for better clarity
+      useCORS: true, // Fix potential cross-origin issues
+    });
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.95); // Higher quality JPEG
 
     const pdf = new jsPDF({
       orientation: "p",
@@ -98,26 +103,34 @@ export default function StudentPage() {
     });
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const aspectRatio = canvas.height / canvas.width;
-    const pdfHeight = pdfWidth * aspectRatio; // Dynamically scale height
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+    // Scale the image to fit within the PDF with margins
+    const margin = 10; // Space around the table
+    const imgWidth = pdfWidth - margin * 2; // Reduce width to fit within margins
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
 
+    pdf.addImage(imgData, "JPEG", margin, margin, imgWidth, imgHeight);
+
+    // Add extra space below the table for readability
+    if (imgHeight < pdfHeight - 50) {
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(margin, imgHeight + margin + 5, pdfWidth - 2 * margin, 30, "F");
+    }
+
+    // Add the signature at the bottom-right
     if (signature) {
-      const sigWidth = 50; // Increased signature size
-      const sigHeight = 25; // Adjusted proportionally
+      const sigWidth = 60; // Increased signature size
+      const sigHeight = 30;
 
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      const sigX = pageWidth - sigWidth - 15; // Right margin
-      const sigY = pageHeight - sigHeight - 15; // Bottom margin
+      const sigX = pdfWidth - sigWidth - margin; // Right margin
+      const sigY = pdfHeight - sigHeight - margin; // Bottom margin
 
       pdf.addImage(signature, "PNG", sigX, sigY, sigWidth, sigHeight);
 
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(14);
-      pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 12);
+      pdf.text("HOD Signature", sigX + 5, sigY + sigHeight + 8);
     }
 
     pdf.save("student_details.pdf");
