@@ -7,8 +7,8 @@ import { Toaster } from "react-hot-toast";
 import { toast } from "react-hot-toast";
 
 export default function StudentPage() {
-  const { id } = useParams(); // Get student ID from URL
-  const router = useRouter(); // Router for navigation
+  const { id } = useParams();
+  const router = useRouter();
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,7 +16,7 @@ export default function StudentPage() {
   const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
-    console.log("URL Parameter ID:", id); // Debugging: Check if id is correct
+    console.log("URL Parameter ID:", id);
 
     if (!id) {
       setError("No student ID found in URL");
@@ -30,8 +30,6 @@ export default function StudentPage() {
           `https://gcesverification.vercel.app/api/getData?id=${id}`
         );
         const data = await res.json();
-
-        console.log("Fetched Data:", data); // Debugging: Check API response
 
         if (data.success) {
           setStudent(data.data[0]);
@@ -62,7 +60,6 @@ export default function StudentPage() {
       if (!response.ok) {
         throw new Error(data.message || "Failed to update user data.");
       }
-      console.log("Update Successful:", data);
       toast.success("Student ID added to user data successfully!");
     } catch (error: any) {
       console.error("Error updating user data:", error.message);
@@ -85,7 +82,6 @@ export default function StudentPage() {
       const userData = await userResponse.json();
       const userId = userData.data._id;
 
-      console.log("Fetched User ID:", userId);
       updateUserStudentData(userId, student._id);
 
       const emailResponse = await fetch(
@@ -127,7 +123,7 @@ export default function StudentPage() {
       <Toaster position="top-right" reverseOrder={false} />{" "}
       <div className="p-6">
         <button
-          onClick={() => router.back()} // Go back to the previous page
+          onClick={() => router.back()}
           className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
         >
           ← Back

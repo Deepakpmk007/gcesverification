@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useEffect, useState, useCallback } from "react";
-import { Loader2 } from "lucide-react"; // For loading spinner
+import { Loader2 } from "lucide-react";
 
 export default function Page() {
   const [students, setStudents] = useState<any[]>([]);
@@ -38,12 +38,10 @@ export default function Page() {
     fetchData();
   }, []);
 
-  // Debounced search input to optimize performance
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }, []);
 
-  // Filter students by search query
   const filteredStudents = students.filter((student) =>
     student.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -52,7 +50,6 @@ export default function Page() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Student Data</h1>
 
-      {/* Search Input */}
       <div className="mb-4">
         <input
           type="text"
@@ -64,14 +61,11 @@ export default function Page() {
         />
       </div>
 
-      {/* Loading Indicator */}
       {loading && (
         <div className="flex justify-center items-center py-4">
           <Loader2 className="animate-spin text-blue-600" size={40} />
         </div>
       )}
-
-      {/* Error Message */}
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       {!loading && !error && (
@@ -115,7 +109,6 @@ export default function Page() {
             </tbody>
           </table>
 
-          {/* No Results Found Message */}
           {filteredStudents.length === 0 && (
             <p className="mt-4 text-red-500">No students found.</p>
           )}

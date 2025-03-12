@@ -11,9 +11,8 @@ export default function VerifyStudentPage() {
   const [pdf, setPdf] = useState<File | null>(null);
   const { stuid } = useParams();
 
-  // Fetch student data when Student ID changes
   useEffect(() => {
-    if (!stuid) return; // Prevent unnecessary API calls
+    if (!stuid) return;
 
     const fetchStudent = async () => {
       setLoading(true);
@@ -45,7 +44,6 @@ export default function VerifyStudentPage() {
     fetchStudent();
   }, [stuid]);
 
-  // Handle PDF upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setPdf(file);
@@ -57,7 +55,6 @@ export default function VerifyStudentPage() {
     }
   };
 
-  // Send email with the uploaded PDF
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!pdf) {
@@ -89,7 +86,6 @@ export default function VerifyStudentPage() {
       );
 
       const rawText = await res.text();
-      console.log("Raw response from server:", rawText);
 
       const data = JSON.parse(rawText);
       if (data.success) {
@@ -107,7 +103,6 @@ export default function VerifyStudentPage() {
 
   return (
     <div className="p-6 max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
-      {/* Improved Toaster with better positioning */}
       <Toaster
         position="top-right"
         toastOptions={{

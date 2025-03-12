@@ -4,7 +4,7 @@ import nodemailer, { Transporter } from "nodemailer";
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb", // Increase limit (default is 4MB)
+      sizeLimit: "10mb",
     },
   },
 };

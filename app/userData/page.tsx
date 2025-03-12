@@ -10,11 +10,9 @@ const UserDetails = () => {
   const applicant = useAppSelector((state) => state.applicantData.value);
   const router = useRouter();
 
-  // Merge data for posting (excluding file, fileIds, uniqueId)
   const postData = { ...student, ...applicant };
-  console.log(postData);
+  // console.log(postData);
 
-  // Function to filter unwanted fields
   const filterData = (data: any) => {
     return Object.entries(data)
       .filter(
@@ -23,12 +21,12 @@ const UserDetails = () => {
           key !== "fileNames" &&
           key !== "fileIds" &&
           value
-      ) // Exclude empty values
+      )
       .map(([key, value]) => ({
         key: key
           .replace(/([A-Z])/g, " $1")
-          .replace(/^./, (str) => str.toUpperCase()), // Format key
-        value: Array.isArray(value) ? value.join(", ") : value, // Convert array to string
+          .replace(/^./, (str) => str.toUpperCase()),
+        value: Array.isArray(value) ? value.join(", ") : value,
       }));
   };
 
@@ -40,10 +38,10 @@ const UserDetails = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: applicant.senderEmail, // Sender's email
-            // sendTo: "deepakpmk007@gmail.com", // Receiver's email
-            subject: "New verification", // Email subject
-            text: `${student.remark}`, // HTML formatted email
+            email: applicant.senderEmail,
+            // sendTo: "deepakpmk007@gmail.com",
+            subject: "New verification",
+            text: `${student.remark}`,
             html: `
             <h1>Student Details</h1>
             <p><strong>Name:</strong> ${student.name}</p>
@@ -72,7 +70,7 @@ const UserDetails = () => {
 
   const handSubmit = async () => {
     try {
-      console.log("Submitting Data:", JSON.stringify(postData, null, 2));
+      // console.log("Submitting Data:", JSON.stringify(postData, null, 2));
 
       const response = await fetch(
         "https://gcesverification.vercel.app/api/data",
@@ -86,9 +84,9 @@ const UserDetails = () => {
       );
       const responseText = await response.text();
       sendEmail();
-      router.push("/success"); // Read raw response text
-      console.log("Response Status:", response.status);
-      console.log("Response Text:", responseText);
+      router.push("/success");
+      // console.log("Response Status:", response.status);
+      // console.log("Response Text:", responseText);
 
       if (!response.ok) {
         throw new Error(`Server Error: ${response.status} - ${responseText}`);
@@ -104,7 +102,6 @@ const UserDetails = () => {
   return (
     <main className="p-6">
       <div className="max-w-4xl mx-auto bg-slate-300 rounded-lg shadow-xl p-6 space-y-6">
-        {/* Student Details */}
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Student Details</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -119,7 +116,6 @@ const UserDetails = () => {
           </div>
         </div>
 
-        {/* Applicant Details */}
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
             Applicant Details
@@ -137,7 +133,6 @@ const UserDetails = () => {
         </div>
       </div>
 
-      {/* Buttons */}
       <div className="flex items-center justify-end w-full mt-6">
         <button
           className="px-6 py-3 border border-black rounded-lg text-lg font-medium hover:bg-green-400 hover:text-white transition duration-300"

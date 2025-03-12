@@ -23,13 +23,10 @@ const LoginPage = () => {
       password,
     });
 
-    // console.log(res);
     if (res?.error) {
       setError("Invalid email or password");
     } else {
-      // Fetch the session to get the user's role
       const session = await getSession();
-      // console.log("Session:", session);
       if (session?.user?.role === "admin") {
         router.push("/admin");
       } else if (session?.user?.role === "hod") {

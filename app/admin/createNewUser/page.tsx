@@ -17,7 +17,7 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    role: "admin", // Default role value
+    role: "admin",
   });
 
   const [error, setError] = useState<string>("");
@@ -25,14 +25,12 @@ export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  // Handle form field changes
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Form submission handler
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -81,7 +79,6 @@ export default function Register() {
           </p>
         )}
 
-        {/* Name Input */}
         <div className="mb-4">
           <label
             htmlFor="name"
@@ -100,7 +97,6 @@ export default function Register() {
           />
         </div>
 
-        {/* Email Input */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -118,8 +114,6 @@ export default function Register() {
             placeholder="Enter your email"
           />
         </div>
-
-        {/* Password Input */}
         <div className="mb-4 relative">
           <label
             htmlFor="password"
@@ -147,7 +141,6 @@ export default function Register() {
           </button>
         </div>
 
-        {/* Role Selection */}
         <div className="mb-6">
           <label
             htmlFor="role"
@@ -167,7 +160,6 @@ export default function Register() {
           </select>
         </div>
 
-        {/* Submit Button with Loading Indicator */}
         <button
           type="submit"
           disabled={loading}

@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-// Interface defining the structure of the document
 export interface IStudent extends Document {
   uniqueId: string;
   name: string;
@@ -27,7 +26,6 @@ export interface IStudent extends Document {
   updatedAt: Date;
 }
 
-// Mongoose schema
 const StudentSchema: Schema<IStudent> = new mongoose.Schema(
   {
     uniqueId: {
@@ -107,7 +105,6 @@ const StudentSchema: Schema<IStudent> = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Export the model
 const StudentData: Model<IStudent> =
   mongoose.models.StudentData ||
   mongoose.model<IStudent>("StudentData", StudentSchema);

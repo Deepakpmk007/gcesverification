@@ -14,13 +14,11 @@ export default async function Page() {
     }
 
     const res = await data.json();
-    console.log(res); // Inspect the API response
 
     if (!res?.data || !Array.isArray(res.data)) {
       throw new Error("Invalid or empty data received.");
     }
 
-    // Filter only users with the role 'hod'
     const hodData = res.data.filter((user: any) => user.role === "hod");
 
     return (
@@ -28,7 +26,6 @@ export default async function Page() {
         <h1 className="text-2xl font-bold mb-4">HOD Data</h1>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-black shadow-lg">
-            {/* Table Head */}
             <thead>
               <tr className="bg-blue-500 text-white">
                 <th className="p-3 border">ID</th>
@@ -36,7 +33,7 @@ export default async function Page() {
                 <th className="p-3 border">Name</th>
               </tr>
             </thead>
-            {/* Table Body */}
+
             <tbody>
               {hodData.map((hod: any, index: number) => (
                 <tr

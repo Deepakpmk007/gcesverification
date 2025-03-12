@@ -9,7 +9,6 @@ export default async function Page() {
   });
   const res = await data.json();
 
-  // Filter only students who are not verified
   const notVerifiedStudents = res.data.filter(
     (student: any) => student.verified
   );
@@ -25,7 +24,6 @@ export default async function Page() {
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-black shadow-lg">
-            {/* Table Head */}
             <thead>
               <tr className="bg-green-500 text-white">
                 <th className="p-3 border">ID</th>
@@ -39,7 +37,6 @@ export default async function Page() {
                 <th className="p-3 border">view</th>
               </tr>
             </thead>
-            {/* Table Body */}
             <tbody>
               {notVerifiedStudents.map((student: any, index: number) => (
                 <tr

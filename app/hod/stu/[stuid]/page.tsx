@@ -9,8 +9,8 @@ import { jsPDF } from "jspdf";
 import { Link } from "lucide-react";
 
 export default function StudentPage() {
-  const { stuid } = useParams(); // Get student ID from URL
-  const router = useRouter(); // Router for navigation
+  const { stuid } = useParams();
+  const router = useRouter();
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,7 +22,7 @@ export default function StudentPage() {
   const [signature, setSignature] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("URL Parameter ID:", stuid); // Debugging: Check if id is correct
+    console.log("URL Parameter ID:", stuid);
 
     if (!stuid) {
       setError("No student ID found in URL");
@@ -37,7 +37,7 @@ export default function StudentPage() {
         );
         const data = await res.json();
 
-        console.log("Fetched Data:", data.data[0]); // Debugging: Check API response
+        console.log("Fetched Data:", data.data[0]);
 
         if (data.success) {
           setStudent(data.data[0]);
@@ -87,13 +87,12 @@ export default function StudentPage() {
     const element = componentRef.current;
     if (!element) return;
 
-    // Capture high-resolution image of the table
     const canvas = await html2canvas(element, {
-      scale: 3, // Higher resolution for better clarity
-      useCORS: true, // Fix potential cross-origin issues
+      scale: 3,
+      useCORS: true,
     });
 
-    const imgData = canvas.toDataURL("image/jpeg", 0.95); // Higher quality JPEG
+    const imgData = canvas.toDataURL("image/jpeg", 0.95);
 
     const pdf = new jsPDF({
       orientation: "p",
@@ -105,26 +104,23 @@ export default function StudentPage() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // Scale the image to fit within the PDF with margins
-    const margin = 10; // Space around the table
-    const imgWidth = pdfWidth - margin * 2; // Reduce width to fit within margins
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+    const margin = 10;
+    const imgWidth = pdfWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     pdf.addImage(imgData, "JPEG", margin, margin, imgWidth, imgHeight);
 
-    // Add extra space below the table for readability
     if (imgHeight < pdfHeight - 50) {
       pdf.setFillColor(255, 255, 255);
       pdf.rect(margin, imgHeight + margin + 5, pdfWidth - 2 * margin, 30, "F");
     }
 
-    // Add the signature at the bottom-right
     if (signature) {
-      const sigWidth = 60; // Increased signature size
+      const sigWidth = 60;
       const sigHeight = 30;
 
-      const sigX = pdfWidth - sigWidth - margin; // Right margin
-      const sigY = pdfHeight - sigHeight - margin; // Bottom margin
+      const sigX = pdfWidth - sigWidth - margin;
+      const sigY = pdfHeight - sigHeight - margin;
 
       pdf.addImage(signature, "PNG", sigX, sigY, sigWidth, sigHeight);
 
@@ -266,9 +262,9 @@ export default function StudentPage() {
           className="mt-5 flex flex-col items-center w-full"
           ref={componentRef}
           style={{
-            width: "210mm", // A4 width
-            minHeight: "297mm", // A4 height
-            padding: "20mm", // Standard margins
+            width: "210mm",
+            minHeight: "297mm",
+            padding: "20mm",
             backgroundColor: "white",
           }}
         >

@@ -12,7 +12,6 @@ export default function StudentListPage() {
   const { id } = useParams();
 
   useEffect(() => {
-    // Fetch an array of student IDs from the first API
     const fetchStudentIds = async () => {
       try {
         const response = await fetch(
@@ -32,7 +31,6 @@ export default function StudentListPage() {
   useEffect(() => {
     setLoading(true);
 
-    // Fetch student data for the array of IDs from the second API
     const fetchStudentsByIds = async (ids: string[]) => {
       if (!ids.length) return;
 
@@ -51,7 +49,6 @@ export default function StudentListPage() {
         }
 
         const result = await response.json();
-        // Filter only verified students
         const verifiedStudents = (result.data || []).filter(
           (student: any) => student.verified === false
         );

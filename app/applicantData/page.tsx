@@ -55,8 +55,6 @@ const ApplicantDataPage: React.FC = () => {
           />
         </main>
       </div>
-
-      {/* Navigation Buttons */}
       <div className="flex justify-between w-full max-w-4xl px-4">
         <button
           className="group flex items-center justify-center gap-2 px-5 py-3 border border-black rounded-lg text-lg font-medium relative transition duration-300 hover:bg-green-400 hover:text-white"

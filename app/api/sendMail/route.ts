@@ -32,10 +32,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const mailOptions = {
       from: email,
-      to: recipient, // Ensuring the recipient is always defined
+      to: recipient,
       subject: subject,
       text: text,
-      html: html || "", // Default to empty string if no HTML provided
+      html: html || "",
     };
 
     const info = await transporter.sendMail(mailOptions);
