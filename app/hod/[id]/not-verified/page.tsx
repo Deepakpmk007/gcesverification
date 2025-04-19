@@ -15,7 +15,7 @@ export default function StudentListPage() {
     const fetchStudentIds = async () => {
       try {
         const response = await fetch(
-          `https://gcesverification.vercel.app/api/findById?id=${id}`
+          ` http://localhost:3000/api/findById?id=${id}`
         );
         const result = await response.json();
         setIds(result.data.studentData || []);
@@ -37,7 +37,7 @@ export default function StudentListPage() {
       try {
         const query = ids.map((id) => `id=${encodeURIComponent(id)}`).join("&");
         const response = await fetch(
-          `https://gcesverification.vercel.app/api/getData?${query}`,
+          ` http://localhost:3000/api/getData?${query}`,
           {
             method: "GET",
             cache: "no-store",

@@ -16,6 +16,7 @@ export default function RootLayout({
     { href: `/hod/${id}/student`, label: "All Students" },
     { href: `/hod/${id}/verified`, label: "Verified Students" },
     { href: `/hod/${id}/not-verified`, label: "Not Verified Students" },
+    { href: `/hod/${id}/upload`, label: "upload student data" },
   ];
 
   return (

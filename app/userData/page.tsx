@@ -32,17 +32,15 @@ const UserDetails = () => {
 
   const sendEmail = async () => {
     try {
-      const emailResponse = await fetch(
-        "https://gcesverification.vercel.app/api/sendMail",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: applicant.senderEmail,
-            // sendTo: "deepakpmk007@gmail.com",
-            subject: "New verification",
-            text: `${student.remark}`,
-            html: `
+      const emailResponse = await fetch(" http://localhost:3000/api/sendMail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: applicant.senderEmail,
+          // sendTo: "deepakpmk007@gmail.com",
+          subject: "New verification",
+          text: `${student.remark}`,
+          html: `
             <h1>Student Details</h1>
             <p><strong>Name:</strong> ${student.name}</p>
             <p><strong>DOB:</strong> ${student.dateOfBirth}</p>
@@ -52,9 +50,8 @@ const UserDetails = () => {
             <p><strong>Year of Study:</strong> ${student.yearOfStudy}</p>
             <p><strong>Remark:</strong> ${student.remark}</p>
             `,
-          }),
-        }
-      );
+        }),
+      });
 
       if (!emailResponse.ok) {
         throw new Error(
@@ -72,16 +69,13 @@ const UserDetails = () => {
     try {
       // console.log("Submitting Data:", JSON.stringify(postData, null, 2));
 
-      const response = await fetch(
-        "https://gcesverification.vercel.app/api/data",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        }
-      );
+      const response = await fetch(" http://localhost:3000/api/data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
       const responseText = await response.text();
       sendEmail();
       router.push("/success");

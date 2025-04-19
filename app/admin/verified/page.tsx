@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 
 export default async function Page() {
-  const data = await fetch("https://gcesverification.vercel.app/api/data", {
+  const data = await fetch(" http://localhost:3000/api/data", {
     cache: "no-store",
   });
   const res = await data.json();

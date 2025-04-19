@@ -8,7 +8,7 @@ import React from "react";
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const pathname = usePathname(); // Get current route
+  const pathname = usePathname();
 
   const navLinks = [
     { href: "/admin", label: "Home" },
@@ -17,6 +17,7 @@ export default function RootLayout({
     { href: "/admin/not-verified", label: "Not Verified Student" },
     { href: "/admin/hod", label: "HOD" },
     { href: "/admin/createNewUser", label: "Create User" },
+    { href: "/admin/AllStudentData", label: "All Student" },
   ];
 
   return (

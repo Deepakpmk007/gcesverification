@@ -19,7 +19,7 @@ export default function VerifyStudentPage() {
       setError("");
       try {
         const res = await fetch(
-          `https://gcesverification.vercel.app/api/getData?id=${stuid}`
+          ` http://localhost:3000/api/getData?id=${stuid}`
         );
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
@@ -77,13 +77,10 @@ export default function VerifyStudentPage() {
 
     const toastId = toast.loading("📨 Sending email...");
     try {
-      const res = await fetch(
-        "https://gcesverification.vercel.app/api/pdfSend",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch("http://localhost:3000  /api/pdfSend", {
+        method: "POST",
+        body: formData,
+      });
 
       const rawText = await res.text();
 
