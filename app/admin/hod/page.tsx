@@ -2,7 +2,7 @@ import React from "react";
 
 export default async function Page() {
   try {
-    const data = await fetch(" http://localhost:3000/api/new-user", {
+    const data = await fetch("/api/new-user", {
       cache: "no-store",
     });
 

@@ -32,7 +32,7 @@ const UserDetails = () => {
 
   const sendEmail = async () => {
     try {
-      const emailResponse = await fetch(" http://localhost:3000/api/sendMail", {
+      const emailResponse = await fetch("/api/sendMail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -69,7 +69,7 @@ const UserDetails = () => {
     try {
       // console.log("Submitting Data:", JSON.stringify(postData, null, 2));
 
-      const response = await fetch(" http://localhost:3000/api/data", {
+      const response = await fetch("/api/data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -26,7 +26,7 @@ export default function StudentPage() {
 
     const fetchStudent = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/getData?id=${id}`);
+        const res = await fetch(`/api/getData?id=${id}`);
         const data = await res.json();
 
         if (data.success) {
@@ -46,7 +46,7 @@ export default function StudentPage() {
 
   const updateUserStudentData = async (userId: string, studentId: string) => {
     try {
-      const response = await fetch(" http://localhost:3000/api/new-user", {
+      const response = await fetch("/api/new-user", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, studentId }),
@@ -65,9 +65,7 @@ export default function StudentPage() {
   const sendEmail = async () => {
     setIsSending(true);
     try {
-      const userResponse = await fetch(
-        ` http://localhost:3000/api/findByEmail?email=${email}`
-      );
+      const userResponse = await fetch(`/api/findByEmail?email=${email}`);
 
       if (!userResponse.ok) {
         const errorData = await userResponse.json();

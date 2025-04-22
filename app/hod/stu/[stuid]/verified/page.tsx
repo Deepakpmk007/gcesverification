@@ -18,9 +18,7 @@ export default function VerifyStudentPage() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch(
-          ` http://localhost:3000/api/getData?id=${stuid}`
-        );
+        const res = await fetch(`/api/getData?id=${stuid}`);
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
         const data = await res.json();

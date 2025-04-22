@@ -22,7 +22,7 @@ export default function Page() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const data = await fetch("http://localhost:3000/api/data", {
+        const data = await fetch("/api/data", {
           cache: "no-store",
         });
         if (!data.ok) {

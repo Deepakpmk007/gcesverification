@@ -23,7 +23,6 @@ export default function RootLayout({
   return (
     <WithAuth requiredRole="admin">
       <div className="flex flex-col h-screen bg-gray-100">
-        {/* Navbar */}
         <nav className="flex justify-between items-center w-full p-6 bg-blue-500 shadow-md">
           <Link
             href="/"

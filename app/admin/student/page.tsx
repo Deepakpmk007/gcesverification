@@ -16,7 +16,7 @@ export default function Page() {
       setError("");
 
       try {
-        const response = await fetch(" http://localhost:3000/api/data", {
+        const response = await fetch("/api/data", {
           cache: "no-store",
         });
 
