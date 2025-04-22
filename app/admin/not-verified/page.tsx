@@ -22,9 +22,12 @@ export default function Page() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const data = await fetch("/api/data", {
-          cache: "no-store",
-        });
+        const data = await fetch(
+          "https://gcesverification.vercel.app/api/data",
+          {
+            cache: "no-store",
+          }
+        );
         if (!data.ok) {
           throw new Error("Failed to fetch data.");
         }

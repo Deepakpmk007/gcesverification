@@ -32,7 +32,9 @@ export default function StudentPage() {
 
     const fetchStudent = async () => {
       try {
-        const res = await fetch(`/api/getData?id=${stuid}`);
+        const res = await fetch(
+          `https://gcesverification.vercel.app/api/getData?id=${stuid}`
+        );
         const data = await res.json();
 
         console.log("Fetched Data:", data.data[0]);
@@ -56,7 +58,7 @@ export default function StudentPage() {
   const updateUserStudentData = async () => {
     try {
       setIsSending(true);
-      const res = await fetch("/api/data", {
+      const res = await fetch("https://gcesverification.vercel.app/api/data", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

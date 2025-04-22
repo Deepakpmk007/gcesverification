@@ -32,7 +32,9 @@ export default function UploadPage() {
   }, [selectedBranch, selectedYear, searchName, students]);
 
   const fetchStudents = async () => {
-    const res = await fetch("/api/AllUserData");
+    const res = await fetch(
+      "https://gcesverification.vercel.app/api/AllUserData"
+    );
     const json = await res.json();
     if (json.success) {
       setStudents(json.data);
@@ -58,11 +60,14 @@ export default function UploadPage() {
     setUploading(true);
     setMessage("");
     try {
-      const res = await fetch("/api/AllUserData", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(excelData),
-      });
+      const res = await fetch(
+        "https://gcesverification.vercel.app/api/AllUserData",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(excelData),
+        }
+      );
 
       const result = await res.json();
       if (res.ok) {

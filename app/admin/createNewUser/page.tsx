@@ -37,11 +37,14 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/new-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        "https://gcesverification.vercel.app/api/new-user",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (res.ok) {
         router.push("/admin");

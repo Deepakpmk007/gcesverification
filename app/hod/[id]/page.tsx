@@ -13,7 +13,7 @@ export default function page() {
     const fetchData = async () => {
       try {
         const data = await fetch(
-          ` http://localhost:3000/api/findById?id=${id}`
+          `https://gcesverification.vercel.app/api/findById?id=${id}`
         );
         const res = await data.json();
         setData(res.data);
