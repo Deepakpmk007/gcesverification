@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const DATABASE_URL = process.env.DATABASE;
+const DATABASE_URL =
+  "mongodb+srv://Admin:admin@main-database.63tnqwl.mongodb.net/student?retryWrites=true&w=majority&appName=Main-Database";
 
 if (!DATABASE_URL) {
   throw new Error(
